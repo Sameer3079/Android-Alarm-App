@@ -98,6 +98,7 @@ public class AlarmCreationActivity extends AppCompatActivity {
             String time = hour.concat(":").concat(minute);
             alarmObject.put("time", time);
             alarmObject.put("tone", toneId);
+            alarmObject.put("isEnabled", true);
 
             alarmsArray.put(alarmObject.toString());
 

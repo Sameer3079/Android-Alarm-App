@@ -5,11 +5,13 @@ public class Alarm {
     private String name;
     private String time;
     private long alarmToneId;
+    private boolean enabled;
 
-    public Alarm(String name, String time, long alarmToneId) {
+    public Alarm(String name, String time, long alarmToneId, boolean enabled) {
         this.name = name;
         this.time = time;
         this.alarmToneId = alarmToneId;
+        this.enabled = enabled;
     }
 
     public String getName() {
@@ -36,4 +38,11 @@ public class Alarm {
         this.alarmToneId = alarmToneId;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 }

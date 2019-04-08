@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.List;
@@ -33,7 +34,9 @@ public class CustomRecyclerViewAdapter
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Alarm alarm = mData.get(position);
-        holder.myTextView.setText(alarm.getName());
+        holder.nameTextView.setText(alarm.getName());
+        holder.timeTextView.setText(alarm.getTime());
+        holder.isEnabled.setChecked(alarm.isEnabled());
     }
 
     // total number of rows
@@ -45,11 +48,15 @@ public class CustomRecyclerViewAdapter
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView myTextView;
+        TextView nameTextView;
+        TextView timeTextView;
+        CheckBox isEnabled;
 
         ViewHolder(View itemView) {
             super(itemView);
-            myTextView = itemView.findViewById(R.id.alarmName);
+            nameTextView = itemView.findViewById(R.id.alarmName);
+            timeTextView = itemView.findViewById(R.id.time);
+            isEnabled = itemView.findViewById(R.id.enabled);
             itemView.setOnClickListener(this);
         }
 
