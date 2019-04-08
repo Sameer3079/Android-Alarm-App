@@ -2,4 +2,9 @@
     <string name="app_name">Android Alarm System</string>
     <string name="action_settings">Settings</string>
     <string name="alarm_creation_title">Create New Alarm</string>
+    <string name="time_label">Time:</string>
+    <string name="create_button">Create</string>
+    <string name="tone_label">Alarm Tone</string>
+    <string name="hour_input_hint">HH</string>
+    <string name="minute_input_hint">MM</string>
 </resources>
