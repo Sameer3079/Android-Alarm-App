@@ -1,19 +1,30 @@
 package lk.sliit.androidalarmsystem;
 
-import android.net.Uri;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity implements CreateAlarm.OnFragmentInteractionListener {
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity {
+
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    RecyclerView recyclerView;
+    CustomRecyclerViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,18 +37,45 @@ public class MainActivity extends AppCompatActivity implements CreateAlarm.OnFra
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-                CreateAlarm fragment = CreateAlarm.newInstance();
-                fragmentTransaction.add(R.id.main_content, fragment);
-                fragmentTransaction.commit();
-
+                Intent intent = new Intent(getApplicationContext(), AlarmCreationActivity.class);
+                startActivity(intent);
             }
         });
+
+        sharedPreferences = getSharedPreferences(getString(R.string.shared_pref_name), MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        recyclerView = findViewById(R.id.recyclerView);
+
+        refreshAlarms();
+    }
+
+    private void refreshAlarms() {
+
+        String alarmsJsonString = sharedPreferences.getString("alarms", "[]");
+        JSONArray alarmsJsonArray = new JSONArray();
+        try {
+            alarmsJsonArray = new JSONArray(alarmsJsonString);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<String> alarmsArray = new ArrayList<>();
+
+        int alarmCount = alarmsJsonArray.length();
+        for (int x = 0; x < alarmCount; x++) {
+            try {
+                Object alarmGenericObject = alarmsJsonArray.get(x);
+                JSONObject alarmJson = new JSONObject(alarmGenericObject.toString());
+                String alarmName = alarmJson.getString("name");
+                alarmsArray.add(alarmName);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new CustomRecyclerViewAdapter(this, alarmsArray);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -57,13 +95,18 @@ public class MainActivity extends AppCompatActivity implements CreateAlarm.OnFra
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_delete_all) {
+            editor.putString("alarms", "[]");
+            editor.apply();
+            refreshAlarms();
         }
 
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
-        System.out.println("onFragmentInteraction()");
+    protected void onPostResume() {
+        super.onPostResume();
+        refreshAlarms();
     }
 }
