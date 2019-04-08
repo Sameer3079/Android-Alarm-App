@@ -88,9 +88,7 @@ public class AlarmCreationActivity extends AppCompatActivity {
             return;
         }
 
-        long itemId = toneSelector.getSelectedItemId();
-        alarmTones = getResources().getStringArray(R.array.tones_array);
-        String selectedTone = alarmTones[(int) itemId];
+        long toneId = toneSelector.getSelectedItemId();
 
         try {
             JSONArray alarmsArray = new JSONArray(existingData);
@@ -99,7 +97,7 @@ public class AlarmCreationActivity extends AppCompatActivity {
             alarmObject.put("name", alarmName);
             String time = hour.concat(":").concat(minute);
             alarmObject.put("time", time);
-            alarmObject.put("tone", selectedTone);
+            alarmObject.put("tone", toneId);
 
             alarmsArray.put(alarmObject.toString());
 
