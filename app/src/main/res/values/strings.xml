@@ -12,4 +12,11 @@
     <string name="hour_input_hint">HH</string>
     <string name="minute_input_hint">MM</string>
     <string name="colon">:</string>
+    <string-array name="tones_array">
+        <item>Alarm Tone 1 (Default)</item>
+        <item>Alarm Tone 2</item>
+        <item>Alarm Tone 3</item>
+        <item>Alarm Tone 4</item>
+        <item>Alarm Tone 5</item>
+    </string-array>
 </resources>
