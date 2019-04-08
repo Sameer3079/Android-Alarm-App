@@ -42,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        sharedPreferences = getSharedPreferences(getString(R.string.shared_pref_name), MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(getString(R.string.shared_pref_name),
+                MODE_PRIVATE);
         editor = sharedPreferences.edit();
         recyclerView = findViewById(R.id.recyclerView);
 
@@ -66,7 +67,8 @@ public class MainActivity extends AppCompatActivity {
             try {
                 Object alarmGenericObject = alarmsJsonArray.get(x);
                 JSONObject alarmJson = new JSONObject(alarmGenericObject.toString());
-                Alarm alarm = new Alarm(alarmJson.getString("name"), alarmJson.getString("time"), alarmJson.getLong("tone"));
+                Alarm alarm = new Alarm(alarmJson.getString("name"),
+                        alarmJson.getString("time"), alarmJson.getLong("tone"));
                 alarmsArray.add(alarm);
             } catch (JSONException e) {
                 e.printStackTrace();

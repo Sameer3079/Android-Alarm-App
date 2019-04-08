@@ -9,7 +9,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecyclerViewAdapter.ViewHolder> {
+public class CustomRecyclerViewAdapter
+        extends RecyclerView.Adapter<CustomRecyclerViewAdapter.ViewHolder> {
 
     private List<Alarm> mData;
     private LayoutInflater mInflater;
