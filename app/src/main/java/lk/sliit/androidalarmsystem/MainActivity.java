@@ -21,6 +21,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
     RecyclerView recyclerView;
     CustomRecyclerViewAdapter adapter;
 
@@ -40,8 +41,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        sharedPreferences = getSharedPreferences("ctse_alarms", MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(getString(R.string.shared_pref_name), MODE_PRIVATE);
+        editor = sharedPreferences.edit();
         recyclerView = findViewById(R.id.recyclerView);
+
+        refreshAlarms();
+    }
+
+    private void refreshAlarms() {
 
         String alarmsJsonString = sharedPreferences.getString("alarms", "[]");
         JSONArray alarmsJsonArray = new JSONArray();
@@ -52,23 +59,23 @@ public class MainActivity extends AppCompatActivity {
         }
 
         ArrayList<String> alarmsArray = new ArrayList<>();
-        alarmsArray.add("alarm 1");
 
         int alarmCount = alarmsJsonArray.length();
         for (int x = 0; x < alarmCount; x++) {
             try {
                 Object alarmGenericObject = alarmsJsonArray.get(x);
                 JSONObject alarmJson = new JSONObject(alarmGenericObject.toString());
-                alarmsArray.add(alarmJson.getString("name"));
+                String alarmName = alarmJson.getString("name");
+                alarmsArray.add(alarmName);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        System.out.println("Alarms: " + alarmsArray.toString());
         adapter = new CustomRecyclerViewAdapter(this, alarmsArray);
         recyclerView.setAdapter(adapter);
-
     }
 
     @Override
@@ -87,9 +94,20 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            System.out.println("Settings");
             return true;
+        } else if (id == R.id.action_delete_all) {
+            editor.putString("alarms", "[]");
+            editor.apply();
+            refreshAlarms();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        refreshAlarms();
     }
 }
