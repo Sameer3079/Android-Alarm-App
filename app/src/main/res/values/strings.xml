@@ -7,4 +7,5 @@
     <string name="tone_label">Alarm Tone</string>
     <string name="hour_input_hint">HH</string>
     <string name="minute_input_hint">MM</string>
+    <string name="colon">:</string>
 </resources>
