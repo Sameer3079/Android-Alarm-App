@@ -4,6 +4,8 @@
     <string name="action_settings">Settings</string>
     <string name="delete_all">Delete All Alarms</string>
     <string name="alarm_creation_title">Create New Alarm</string>
+    <string name="alarm_name">Name</string>
+    <string name="alarm_name_hint">Alarm Name</string>
     <string name="time_label">Time:</string>
     <string name="create_button">Create</string>
     <string name="tone_label">Alarm Tone</string>

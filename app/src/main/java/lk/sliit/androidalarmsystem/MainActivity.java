@@ -73,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        System.out.println("Alarms: " + alarmsArray.toString());
         adapter = new CustomRecyclerViewAdapter(this, alarmsArray);
         recyclerView.setAdapter(adapter);
     }
@@ -94,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            System.out.println("Settings");
             return true;
         } else if (id == R.id.action_delete_all) {
             editor.putString("alarms", "[]");
