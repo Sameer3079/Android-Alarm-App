@@ -59,15 +59,15 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        ArrayList<String> alarmsArray = new ArrayList<>();
+        ArrayList<Alarm> alarmsArray = new ArrayList<>();
 
         int alarmCount = alarmsJsonArray.length();
         for (int x = 0; x < alarmCount; x++) {
             try {
                 Object alarmGenericObject = alarmsJsonArray.get(x);
                 JSONObject alarmJson = new JSONObject(alarmGenericObject.toString());
-                String alarmName = alarmJson.getString("name");
-                alarmsArray.add(alarmName);
+                Alarm alarm = new Alarm(alarmJson.getString("name"), alarmJson.getString("time"), alarmJson.getLong("tone"));
+                alarmsArray.add(alarm);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

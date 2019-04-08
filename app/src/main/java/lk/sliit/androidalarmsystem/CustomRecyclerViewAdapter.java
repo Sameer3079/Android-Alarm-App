@@ -11,12 +11,12 @@ import java.util.List;
 
 public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecyclerViewAdapter.ViewHolder> {
 
-    private List<String> mData;
+    private List<Alarm> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
     // data is passed into the constructor
-    CustomRecyclerViewAdapter(Context context, List<String> data) {
+    CustomRecyclerViewAdapter(Context context, List<Alarm> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
@@ -31,8 +31,8 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String alarmName = mData.get(position);
-        holder.myTextView.setText(alarmName);
+        Alarm alarm = mData.get(position);
+        holder.myTextView.setText(alarm.getName());
     }
 
     // total number of rows
@@ -59,7 +59,7 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
     }
 
     // convenience method for getting data at click position
-    String getItem(int id) {
+    Alarm getItem(int id) {
         return mData.get(id);
     }
 
