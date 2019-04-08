@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,6 +23,7 @@ public class AlarmCreationActivity extends AppCompatActivity {
     Button createButton;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+    String[] alarmTones;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +56,41 @@ public class AlarmCreationActivity extends AppCompatActivity {
         String existingData = sharedPreferences.getString("alarms", "[]");
 
         String alarmName = nameTxtView.getText().toString();
+
+        if (alarmName.trim().equals("")) {
+            Toast.makeText(this, "Invalid Alarm Name", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         String hour = hourTxtView.getText().toString();
+        int hourInt = -1;
+        try {
+            hourInt = Integer.parseInt(hour.trim());
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Invalid Time", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (hourInt <= 0 || hourInt >= 24) {
+            Toast.makeText(this, "Invalid Time", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         String minute = minuteTxtView.getText().toString();
+        int minuteInt = -1;
+        try {
+            minuteInt = Integer.parseInt(minute.trim());
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Invalid Time", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (minuteInt <= 0 || minuteInt >= 60) {
+            Toast.makeText(this, "Invalid Time", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        long itemId = toneSelector.getSelectedItemId();
+        alarmTones = getResources().getStringArray(R.array.tones_array);
+        String selectedTone = alarmTones[(int) itemId];
 
         try {
             JSONArray alarmsArray = new JSONArray(existingData);
@@ -64,6 +99,7 @@ public class AlarmCreationActivity extends AppCompatActivity {
             alarmObject.put("name", alarmName);
             String time = hour.concat(":").concat(minute);
             alarmObject.put("time", time);
+            alarmObject.put("tone", selectedTone);
 
             alarmsArray.put(alarmObject.toString());
 
