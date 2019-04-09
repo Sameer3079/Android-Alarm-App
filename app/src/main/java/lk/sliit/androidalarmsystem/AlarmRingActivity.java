@@ -101,11 +101,11 @@ public class AlarmRingActivity extends AppCompatActivity {
 //        mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);
 
-        alarmName = findViewById(R.id.alarm_name);
-        submitButton = findViewById(R.id.submitBtn);
-        Intent intent = getIntent();
-        String alarmNameString = intent.getStringExtra("alarmName");
-        alarmName.setText(alarmNameString);
+//        alarmName = findViewById(R.id.alarm_name);
+//        submitButton = findViewById(R.id.submitBtn);
+//        Intent intent = getIntent();
+//        String alarmNameString = intent.getStringExtra("alarmName");
+//        alarmName.setText(alarmNameString);
 
         // Set up the user interaction to manually show or hide the system UI.
         mContentView.setOnClickListener(new View.OnClickListener() {
