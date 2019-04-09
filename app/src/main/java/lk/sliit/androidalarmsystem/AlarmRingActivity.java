@@ -1,6 +1,7 @@
 package lk.sliit.androidalarmsystem;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.TextView;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -51,7 +54,7 @@ public class AlarmRingActivity extends AppCompatActivity {
                     | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         }
     };
-//    private View mControlsView;
+    //    private View mControlsView;
     private final Runnable mShowPart2Runnable = new Runnable() {
         @Override
         public void run() {
@@ -85,6 +88,9 @@ public class AlarmRingActivity extends AppCompatActivity {
 //        }
 //    };
 
+    private Button submitButton;
+    private TextView alarmName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +101,11 @@ public class AlarmRingActivity extends AppCompatActivity {
 //        mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);
 
+        alarmName = findViewById(R.id.alarm_name);
+        submitButton = findViewById(R.id.submitBtn);
+        Intent intent = getIntent();
+        String alarmNameString = intent.getStringExtra("alarmName");
+        alarmName.setText(alarmNameString);
 
         // Set up the user interaction to manually show or hide the system UI.
         mContentView.setOnClickListener(new View.OnClickListener() {

@@ -21,6 +21,6 @@
     </string-array>
 
     <string name="title_activity_alarm_ring">AlarmRingActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="desc">Answer the following question to disable alarm</string>
+    <string name="submit_answer">Check</string>
 </resources>
