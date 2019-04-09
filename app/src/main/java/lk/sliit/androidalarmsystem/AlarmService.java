@@ -30,7 +30,6 @@ public class AlarmService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         sharedPreferences = getSharedPreferences(getString(R.string.shared_pref_name), MODE_PRIVATE);
 
-//        sharedPreferences.
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.SECOND, 0);
@@ -49,25 +48,15 @@ public class AlarmService extends Service {
                 Intent intent2 = new Intent(this, AlarmReceiver.class);
                 intent2.putExtra("alarmName", alarm.getString("name"));
                 alarmIntent = PendingIntent.getBroadcast(this, x, intent2, 0);
-                alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmIntent);
+                alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                        AlarmManager.INTERVAL_DAY, alarmIntent);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-//        alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-//                SystemClock.elapsedRealtime() +
-//                        5 * 1000, alarmIntent);
-
-        // Set the alarm to start at approximately 2:00 p.m.
-
-
-        // With setInexactRepeating(), you have to use one of the AlarmManager interval
-        // constants--in this case, AlarmManager.INTERVAL_DAY.
-        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmIntent);
-//        alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-//                AlarmManager.INTERVAL_DAY, alarmIntent);
-
+        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, alarmIntent);
 
         this.stopSelf();
         return super.onStartCommand(intent, flags, startId);
