@@ -54,9 +54,6 @@ public class AlarmCreationActivity extends AppCompatActivity {
                 createAlarm();
             }
         });
-        Window wind;
-        wind = this.getWindow();
-        wind.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
     }
 
     private void createAlarm() {
