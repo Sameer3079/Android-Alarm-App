@@ -19,4 +19,8 @@
         <item>Alarm Tone 4</item>
         <item>Alarm Tone 5</item>
     </string-array>
+
+    <string name="title_activity_alarm_ring">AlarmRingActivity</string>
+    <string name="desc">Answer the following question to disable alarm</string>
+    <string name="submit_answer">Check</string>
 </resources>
