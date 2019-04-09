@@ -11,7 +11,6 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -24,7 +23,7 @@ public class CustomRecyclerViewAdapter
     private ItemClickListener mClickListener;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
-    private boolean isInitializing = true;
+    private boolean isInitialized = false;
 
     // data is passed into the constructor
     CustomRecyclerViewAdapter(Context context, List<Alarm> data) {
@@ -48,7 +47,6 @@ public class CustomRecyclerViewAdapter
         holder.nameTextView.setText(alarm.getName());
         holder.timeTextView.setText(alarm.getTime());
         holder.isEnabled.setChecked(alarm.isEnabled());
-        isInitializing = false;
     }
 
     // total number of rows
@@ -72,26 +70,24 @@ public class CustomRecyclerViewAdapter
             isEnabled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isInitializing) {
-                        return;
+                    if (isInitialized) {
+                        try {
+                            RecyclerView recyclerView = (RecyclerView) buttonView.getParent().getParent();
+                            int id = recyclerView.getChildAdapterPosition((View) buttonView.getParent());
+                            String rawData = sharedPreferences.getString("alarms", "[]");
+                            JSONArray alarmsArray = new JSONArray(rawData);
+                            Object tempObj = alarmsArray.get(id);
+                            JSONObject alarmObj = new JSONObject(tempObj.toString());
+                            alarmObj.put("isEnabled", !alarmObj.getBoolean("isEnabled"));
+                            alarmsArray.put(id, alarmObj.toString());
+                            editor.putString("alarms", alarmsArray.toString());
+                            editor.apply();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        isInitialized = true;
                     }
-                    try {
-                        RecyclerView recyclerView = (RecyclerView) buttonView.getParent().getParent();
-                        int id = recyclerView.getChildAdapterPosition((View) buttonView.getParent());
-                        String rawData = sharedPreferences.getString("alarms", "[]");
-                        JSONArray alarmsArray = new JSONArray(rawData);
-                        Object tempObj = alarmsArray.get(id);
-                        JSONObject alarmObj = new JSONObject(tempObj.toString());
-                        alarmObj.put("isEnabled", !alarmObj.getBoolean("isEnabled"));
-                        alarmsArray.put(id, alarmObj.toString());
-                        editor.putString("alarms", alarmsArray.toString());
-                        editor.apply();
-                        System.out.println("Saved");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-
                 }
             });
             itemView.setOnClickListener(this);
@@ -99,7 +95,6 @@ public class CustomRecyclerViewAdapter
 
         @Override
         public void onClick(View view) {
-            System.out.println("onClick() ----------------------");
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
     }

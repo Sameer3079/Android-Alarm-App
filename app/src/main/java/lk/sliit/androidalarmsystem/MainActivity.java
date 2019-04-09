@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         editor = sharedPreferences.edit();
         recyclerView = findViewById(R.id.recyclerView);
 
+        startService(new Intent(this, AlarmService.class));
         refreshAlarms();
     }
 
