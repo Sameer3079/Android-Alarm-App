@@ -34,8 +34,6 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences.Editor editor;
     RecyclerView recyclerView;
     CustomRecyclerViewAdapter adapter;
-    private AlarmManager alarmMgr;
-    private PendingIntent alarmIntent;
 
 
     @Override
@@ -62,13 +60,7 @@ public class MainActivity extends AppCompatActivity {
         startService(new Intent(this, AlarmService.class));
         refreshAlarms();
 
-        alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, AlarmReceiver.class);
-        alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
 
-        alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() +
-                        5 * 1000, alarmIntent);
 
     }
 
