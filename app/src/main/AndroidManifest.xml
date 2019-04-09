@@ -21,10 +21,11 @@
             </intent-filter>
         </activity>
 
-
         <service
             android:name=".AlarmService"
             android:enabled="true"></service>
+
+        <receiver android:name=".AlarmReceiver"></receiver>
     </application>
 
 

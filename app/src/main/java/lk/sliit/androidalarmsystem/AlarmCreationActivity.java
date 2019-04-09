@@ -1,11 +1,15 @@
 package lk.sliit.androidalarmsystem;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -50,6 +54,9 @@ public class AlarmCreationActivity extends AppCompatActivity {
                 createAlarm();
             }
         });
+        Window wind;
+        wind = this.getWindow();
+        wind.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
     }
 
     private void createAlarm() {

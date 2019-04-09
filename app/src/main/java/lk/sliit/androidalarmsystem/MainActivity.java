@@ -1,8 +1,14 @@
 package lk.sliit.androidalarmsystem;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 
 import org.json.JSONArray;
@@ -19,12 +26,17 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static android.widget.Toast.makeText;
+
 public class MainActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     RecyclerView recyclerView;
     CustomRecyclerViewAdapter adapter;
+    private AlarmManager alarmMgr;
+    private PendingIntent alarmIntent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +61,15 @@ public class MainActivity extends AppCompatActivity {
 
         startService(new Intent(this, AlarmService.class));
         refreshAlarms();
+
+        alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+
+        alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                SystemClock.elapsedRealtime() +
+                        5 * 1000, alarmIntent);
+
     }
 
     private void refreshAlarms() {
