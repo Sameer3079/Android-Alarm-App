@@ -28,9 +28,21 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void save(String value) {
+    public void save(Alarm alarm) {
+        int id = 0;
+        SQLiteDatabase readableDatabase = this.getReadableDatabase();
+        Cursor cursor = readableDatabase.rawQuery("SELECT max(id) FROM " + TABLE_NAME, null);
+        cursor.moveToNext();
+        if (!cursor.isAfterLast()) {
+            id = cursor.getInt(0);
+        }
+        cursor.close();
         ContentValues cv = new ContentValues();
-        cv.put("value", value);
+        cv.put("id", id);
+        cv.put("alarmName", alarm.getName());
+        cv.put("time", alarm.getTime());
+        cv.put("tone", alarm.getAlarmToneId());
+        cv.put("enabled", alarm.isEnabled());
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_NAME, null, cv);
         db.close();
@@ -40,7 +52,9 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT value FROM " + TABLE_NAME + " WHERE id = " + id, null);
         cursor.moveToNext();
-        return cursor.getString(cursor.getColumnIndex("value"));
+        String alarmName = cursor.getString(cursor.getColumnIndex("alarmName"));
+        cursor.close();
+        return alarmName;
     }
 
     public List<Alarm> readAll() {
@@ -54,14 +68,15 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         int enabledIdx = cursor.getColumnIndex("enabled");
         List<Alarm> data = new ArrayList<>();
         while (!cursor.isAfterLast()) {
-            Integer id = cursor.getInt(idIdx);
+            int id = cursor.getInt(idIdx);
             String name = cursor.getString(nameIdx);
             String time = cursor.getString(timeIdx);
             long tone = cursor.getLong(toneIdx);
-            Boolean enabled = cursor.getInt(enabledIdx) > 0;
+            boolean enabled = cursor.getInt(enabledIdx) > 0;
             data.add(new Alarm(id, name, time, tone, enabled));
             cursor.moveToNext();
         }
+        cursor.close();
 
         return data;
     }
