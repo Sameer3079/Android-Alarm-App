@@ -78,7 +78,7 @@ public class AlarmService extends Service {
     }
 
     private void deleteAll() {
-
+        // Done within the Main Activity itself
     }
 
     private void deleteOne() {
