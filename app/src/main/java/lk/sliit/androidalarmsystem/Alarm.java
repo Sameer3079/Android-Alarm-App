@@ -2,13 +2,13 @@ package lk.sliit.androidalarmsystem;
 
 public class Alarm {
 
-    private int id;
+    private long id;
     private String name;
     private String time;
     private long alarmToneId;
     private boolean enabled;
 
-    Alarm(int id, String name, String time, long alarmToneId, boolean enabled) {
+    Alarm(long id, String name, String time, long alarmToneId, boolean enabled) {
         this.id = id;
         this.name = name;
         this.time = time;
@@ -23,11 +23,11 @@ public class Alarm {
         this.enabled = enabled;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

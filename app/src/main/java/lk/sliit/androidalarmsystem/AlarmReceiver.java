@@ -13,9 +13,12 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.i(TAG, "onReceive()");
-        context.startActivity(new Intent(context, AlarmRingActivity.class)
-                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .putExtra("alarmName", intent.getStringExtra("alarmName")));
+
+        Intent ringAlarmIntent = new Intent(context, AlarmRingActivity.class);
+        ringAlarmIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        ringAlarmIntent.putExtra("alarmName", intent.getStringExtra("alarmName"));
+
+        context.startActivity(ringAlarmIntent);
     }
 
 }

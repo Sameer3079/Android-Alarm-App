@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
     private final static String TAG = "APP - MainActivity";
     RecyclerView recyclerView;
     CustomRecyclerViewAdapter adapter;
-    AlarmDatabaseHelper alarmDatabaseHelper;
 
 
     @Override
@@ -47,16 +46,19 @@ public class MainActivity extends AppCompatActivity {
         });
 
         recyclerView = findViewById(R.id.recyclerView);
-        alarmDatabaseHelper = new AlarmDatabaseHelper(getApplicationContext());
-        startService(new Intent(this, AlarmService.class));
+
+        AlarmDatabaseHelper alarmDatabaseHelper = new AlarmDatabaseHelper(getApplicationContext());
+
+        Intent startAlarmServiceIntent = new Intent(this, AlarmService.class);
+        startAlarmServiceIntent.putExtra("command", "SET_ALL");
+        startService(startAlarmServiceIntent);
+        alarmDatabaseHelper.close();
         refreshAlarms();
-
-
     }
 
     private void refreshAlarms() {
 
-
+        AlarmDatabaseHelper alarmDatabaseHelper = new AlarmDatabaseHelper(getApplicationContext());
         List<Alarm> alarms = alarmDatabaseHelper.readAll();
 
         ArrayList<Alarm> alarmsArray = new ArrayList<>();
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
             Alarm alarm = alarms.get(x);
             alarmsArray.add(alarm);
         }
+        alarmDatabaseHelper.close();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new CustomRecyclerViewAdapter(this, alarmsArray);
@@ -90,15 +93,16 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_delete_all) {
+            AlarmDatabaseHelper alarmDatabaseHelper = new AlarmDatabaseHelper(getApplicationContext());
             List<Alarm> alarms = alarmDatabaseHelper.readAll();
             alarmDatabaseHelper.deleteAll();
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             for (Alarm alarm : alarms) {
-                alarmManager.cancel(PendingIntent.getBroadcast(this, alarm.getId(),
+                alarmManager.cancel(PendingIntent.getBroadcast(this, (int) alarm.getId(),
                         new Intent(this, AlarmReceiver.class)
                                 .putExtra("alarmName", alarm.getName()), 0));
             }
-            // TODO: Cancel all Alarms
+            alarmDatabaseHelper.close();
             refreshAlarms();
         }
 

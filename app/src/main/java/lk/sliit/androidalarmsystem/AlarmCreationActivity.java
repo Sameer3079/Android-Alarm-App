@@ -91,7 +91,7 @@ public class AlarmCreationActivity extends AppCompatActivity {
         long toneId = toneSelector.getSelectedItemId();
 
         if (hourInt < 10) {
-            hour = "0".concat(hourInt+"");
+            hour = "0".concat(hourInt + "");
         }
         if (minuteInt < 10) {
             minute = "0".concat(minuteInt + "");
@@ -99,7 +99,13 @@ public class AlarmCreationActivity extends AppCompatActivity {
         String time = hour.concat(":").concat(minute);
 
         Alarm alarm = new Alarm(alarmName, time, toneId, true);
-        alarmDatabaseHelper.save(alarm);
+        long id = alarmDatabaseHelper.save(alarm);
+
+        Intent setNewAlarmIntent = new Intent(this, AlarmService.class);
+        setNewAlarmIntent.putExtra("command", "NEW_ALARM");
+        setNewAlarmIntent.putExtra("alarmId", id);
+        startService(setNewAlarmIntent);
+
         this.finish();
     }
 }
