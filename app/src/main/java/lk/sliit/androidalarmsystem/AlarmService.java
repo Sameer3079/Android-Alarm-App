@@ -110,7 +110,7 @@ public class AlarmService extends Service {
             calendar.add(Calendar.DATE, 1);
         }
         Intent intent2 = new Intent(this, AlarmReceiver.class);
-        intent2.putExtra("alarmName", alarm.getName());
+        intent2.putExtra("alarmId", alarm.getId() + "");
         alarmIntent = PendingIntent.getBroadcast(this, (int) alarm.getId(), intent2, 0);
         alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY, alarmIntent);

@@ -16,7 +16,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         Intent ringAlarmIntent = new Intent(context, AlarmRingActivity.class);
         ringAlarmIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        ringAlarmIntent.putExtra("alarmName", intent.getStringExtra("alarmName"));
+        ringAlarmIntent.putExtra("alarmId", intent.getStringExtra("alarmId"));
 
         context.startActivity(ringAlarmIntent);
     }

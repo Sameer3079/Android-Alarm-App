@@ -92,7 +92,7 @@ public class AlarmRingActivity extends AppCompatActivity {
 //    };
 
     private Button submitButton;
-    private TextView alarmName;
+//    private TextView alarmName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,11 +104,15 @@ public class AlarmRingActivity extends AppCompatActivity {
 //        mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);
 
-//        alarmName = findViewById(R.id.alarm_name);
-//        submitButton = findViewById(R.id.submitBtn);
-//        Intent intent = getIntent();
-//        String alarmNameString = intent.getStringExtra("alarmName");
-//        alarmName.setText(alarmNameString);
+        AlarmDatabaseHelper helper = new AlarmDatabaseHelper(getApplicationContext());
+
+        Intent intent = getIntent();
+        String idAsString = intent.getStringExtra("alarmId");
+        long id = Long.parseLong(idAsString);
+        Alarm alarm = helper.read(id);
+        TextView alarmName = findViewById(R.id.alarmNameTextView);
+        submitButton = findViewById(R.id.submitBtn);
+        alarmName.setText(alarm.getName());
 
         // Set up the user interaction to manually show or hide the system UI.
         mContentView.setOnClickListener(new View.OnClickListener() {
@@ -122,8 +126,7 @@ public class AlarmRingActivity extends AppCompatActivity {
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
 //        findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
-        Intent intent = getIntent();
-        Log.i(TAG, intent.getStringExtra("alarmName"));
+        Log.i(TAG, "Alarm Name" + alarm.getName());
         Window wind;
         wind = this.getWindow();
         wind.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
