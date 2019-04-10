@@ -1,14 +1,8 @@
 package lk.sliit.androidalarmsystem;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,20 +11,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
-
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.widget.Toast.makeText;
 
 public class MainActivity extends AppCompatActivity {
 
-    SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     RecyclerView recyclerView;
     CustomRecyclerViewAdapter adapter;
@@ -52,45 +40,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        sharedPreferences = getSharedPreferences(getString(R.string.shared_pref_name),
-                MODE_PRIVATE);
-        editor = sharedPreferences.edit();
         recyclerView = findViewById(R.id.recyclerView);
 
         startService(new Intent(this, AlarmService.class));
         refreshAlarms();
 
 
-
     }
 
     private void refreshAlarms() {
 
-        String alarmsJsonString = sharedPreferences.getString("alarms", "[]");
-        JSONArray alarmsJsonArray = new JSONArray();
-        try {
-            alarmsJsonArray = new JSONArray(alarmsJsonString);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        AlarmDatabaseHelper alarmDatabaseHelper = new AlarmDatabaseHelper(getApplicationContext());
+        List<Alarm> alarms = alarmDatabaseHelper.readAll();
 
         ArrayList<Alarm> alarmsArray = new ArrayList<>();
 
-        int alarmCount = alarmsJsonArray.length();
+        int alarmCount = alarms.size();
         for (int x = 0; x < alarmCount; x++) {
-            try {
-                Object alarmGenericObject = alarmsJsonArray.get(x);
-                JSONObject alarmJson = new JSONObject(alarmGenericObject.toString());
-                Alarm alarm = new Alarm(
-                        alarmJson.getString("name"),
-                        alarmJson.getString("time"),
-                        alarmJson.getLong("tone"),
-                        alarmJson.getBoolean("isEnabled")
-                );
-                alarmsArray.add(alarm);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            Alarm alarm = alarms.get(x);
+            alarmsArray.add(alarm);
         }
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

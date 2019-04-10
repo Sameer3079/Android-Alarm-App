@@ -14,13 +14,13 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
     private final static String TABLE_NAME = "alarms";
     private final static String DB_NAME = "ctse_alarms.db";
 
-    public AlarmDatabaseHelper(Context context) {
+    AlarmDatabaseHelper(Context context) {
         super(context.getApplicationContext(), DB_NAME, null, 1);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + TABLE_NAME + " (id integer PRIMARY KEY, alarmName text, time number, tone number, enabled boolean)");
+        db.execSQL("CREATE TABLE " + TABLE_NAME + " (id integer PRIMARY KEY, alarmName text, time string, tone number, enabled boolean)");
     }
 
     @Override
@@ -28,7 +28,7 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void save(Alarm alarm) {
+    void save(Alarm alarm) {
         int id = 0;
         SQLiteDatabase readableDatabase = this.getReadableDatabase();
         Cursor cursor = readableDatabase.rawQuery("SELECT max(id) FROM " + TABLE_NAME, null);
@@ -48,7 +48,7 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public Alarm read(int id) {
+    Alarm read(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT value FROM " + TABLE_NAME + " WHERE id = " + id, null);
         cursor.moveToNext();
@@ -61,7 +61,7 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         return alarm;
     }
 
-    public List<Alarm> readAll() {
+    List<Alarm> readAll() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
         cursor.moveToNext();

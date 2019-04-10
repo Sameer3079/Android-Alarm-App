@@ -26,9 +26,6 @@ public class AlarmCreationActivity extends AppCompatActivity {
     TextView nameTxtView, hourTxtView, minuteTxtView;
     Spinner toneSelector;
     Button createButton;
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
-    String[] alarmTones;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +37,6 @@ public class AlarmCreationActivity extends AppCompatActivity {
         minuteTxtView = findViewById(R.id.minute);
         toneSelector = findViewById(R.id.toneSelector);
         createButton = findViewById(R.id.createButton);
-
-        sharedPreferences = getSharedPreferences(getString(R.string.shared_pref_name), MODE_PRIVATE);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.tones_array, android.R.layout.simple_spinner_item);
@@ -57,8 +52,8 @@ public class AlarmCreationActivity extends AppCompatActivity {
     }
 
     private void createAlarm() {
-        editor = sharedPreferences.edit();
-        String existingData = sharedPreferences.getString("alarms", "[]");
+
+        AlarmDatabaseHelper alarmDatabaseHelper = new AlarmDatabaseHelper(getApplicationContext());
 
         String alarmName = nameTxtView.getText().toString();
 
@@ -95,29 +90,16 @@ public class AlarmCreationActivity extends AppCompatActivity {
 
         long toneId = toneSelector.getSelectedItemId();
 
-        try {
-            JSONArray alarmsArray = new JSONArray(existingData);
-
-            JSONObject alarmObject = new JSONObject();
-            alarmObject.put("name", alarmName);
-            if (hourInt < 10) {
-                hour = "0".concat(hour);
-            }
-            if (minuteInt < 10) {
-                minute = "0".concat(minute);
-            }
-            String time = hour.concat(":").concat(minute);
-            alarmObject.put("time", time);
-            alarmObject.put("tone", toneId);
-            alarmObject.put("isEnabled", true);
-
-            alarmsArray.put(alarmObject.toString());
-
-            editor.putString("alarms", alarmsArray.toString());
-            editor.apply();
-            this.finish();
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (hourInt < 10) {
+            hour = "0".concat(hour);
         }
+        if (minuteInt < 10) {
+            minute = "0".concat(minute);
+        }
+        String time = hour.concat(":").concat(minute);
+
+        Alarm alarm = new Alarm(alarmName, time, toneId, true);
+        alarmDatabaseHelper.save(alarm);
+        this.finish();
     }
 }
