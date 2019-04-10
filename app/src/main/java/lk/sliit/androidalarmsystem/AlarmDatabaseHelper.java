@@ -20,7 +20,7 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + TABLE_NAME + " (id integer PRIMARY KEY, alarmName text, time string, tone number, enabled boolean)");
+        db.execSQL("CREATE TABLE " + TABLE_NAME + " (id integer PRIMARY KEY AUTOINCREMENT NOT NULL, alarmName text, time string, tone number, enabled boolean)");
     }
 
     @Override
@@ -29,16 +29,16 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
     }
 
     void save(Alarm alarm) {
-        int id = 0;
-        SQLiteDatabase readableDatabase = this.getReadableDatabase();
-        Cursor cursor = readableDatabase.rawQuery("SELECT max(id) FROM " + TABLE_NAME, null);
-        cursor.moveToNext();
-        if (!cursor.isAfterLast()) {
-            id = cursor.getInt(0);
-        }
-        cursor.close();
+//        int id = 0;
+//        SQLiteDatabase readableDatabase = this.getReadableDatabase();
+//        Cursor cursor = readableDatabase.rawQuery("SELECT max(id) FROM " + TABLE_NAME, null);
+//        cursor.moveToNext();
+//        if (!cursor.isAfterLast()) {
+//            id = cursor.getInt(0);
+//        }
+//        cursor.close();
         ContentValues cv = new ContentValues();
-        cv.put("id", id);
+//        cv.put("id", id);
         cv.put("alarmName", alarm.getName());
         cv.put("time", alarm.getTime());
         cv.put("tone", alarm.getAlarmToneId());
@@ -59,6 +59,11 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         Alarm alarm = new Alarm(id, alarmName, time, toneId, enabled);
         cursor.close();
         return alarm;
+    }
+
+    void deleteAll() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + TABLE_NAME);
     }
 
     List<Alarm> readAll() {

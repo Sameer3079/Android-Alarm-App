@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -18,6 +19,8 @@ import android.widget.TextView;
  * status bar and navigation/system bar) with user interaction.
  */
 public class AlarmRingActivity extends AppCompatActivity {
+
+    private final static String TAG = "APP - AlarmRingActivity";
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -119,7 +122,8 @@ public class AlarmRingActivity extends AppCompatActivity {
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
 //        findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
-
+        Intent intent = getIntent();
+        Log.i(TAG, intent.getStringExtra("alarmName"));
         Window wind;
         wind = this.getWindow();
         wind.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);

@@ -1,5 +1,8 @@
 package lk.sliit.androidalarmsystem;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,13 +23,15 @@ import static android.widget.Toast.makeText;
 
 public class MainActivity extends AppCompatActivity {
 
-    SharedPreferences.Editor editor;
+    private final static String TAG = "APP - MainActivity";
     RecyclerView recyclerView;
     CustomRecyclerViewAdapter adapter;
+    AlarmDatabaseHelper alarmDatabaseHelper;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i(TAG, "onCreate Lifecycle Method");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -41,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         recyclerView = findViewById(R.id.recyclerView);
-
+        alarmDatabaseHelper = new AlarmDatabaseHelper(getApplicationContext());
         startService(new Intent(this, AlarmService.class));
         refreshAlarms();
 
@@ -50,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void refreshAlarms() {
 
-        AlarmDatabaseHelper alarmDatabaseHelper = new AlarmDatabaseHelper(getApplicationContext());
+
         List<Alarm> alarms = alarmDatabaseHelper.readAll();
 
         ArrayList<Alarm> alarmsArray = new ArrayList<>();
@@ -84,8 +90,15 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_delete_all) {
-            editor.putString("alarms", "[]");
-            editor.apply();
+            List<Alarm> alarms = alarmDatabaseHelper.readAll();
+            alarmDatabaseHelper.deleteAll();
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            for (Alarm alarm : alarms) {
+                alarmManager.cancel(PendingIntent.getBroadcast(this, alarm.getId(),
+                        new Intent(this, AlarmReceiver.class)
+                                .putExtra("alarmName", alarm.getName()), 0));
+            }
+            // TODO: Cancel all Alarms
             refreshAlarms();
         }
 

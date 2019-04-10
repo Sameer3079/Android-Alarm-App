@@ -8,12 +8,14 @@ import android.widget.Toast;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
-    private String TAG = "ALARM_RECEIVER";
+    private String TAG = "APP - AlarmReceiver";
 
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.i(TAG, "onReceive()");
-        context.startActivity(new Intent(context, AlarmRingActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        context.startActivity(new Intent(context, AlarmRingActivity.class)
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .putExtra("alarmName", intent.getStringExtra("alarmName")));
     }
 
 }

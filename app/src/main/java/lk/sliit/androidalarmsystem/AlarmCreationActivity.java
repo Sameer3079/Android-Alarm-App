@@ -91,10 +91,10 @@ public class AlarmCreationActivity extends AppCompatActivity {
         long toneId = toneSelector.getSelectedItemId();
 
         if (hourInt < 10) {
-            hour = "0".concat(hour);
+            hour = "0".concat(hourInt+"");
         }
         if (minuteInt < 10) {
-            minute = "0".concat(minute);
+            minute = "0".concat(minuteInt + "");
         }
         String time = hour.concat(":").concat(minute);
 
