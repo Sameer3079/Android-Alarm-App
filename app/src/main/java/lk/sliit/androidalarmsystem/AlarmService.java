@@ -112,8 +112,8 @@ public class AlarmService extends Service {
         Intent intent2 = new Intent(this, AlarmReceiver.class);
         intent2.putExtra("alarmId", alarm.getId() + "");
         alarmIntent = PendingIntent.getBroadcast(this, (int) alarm.getId(), intent2, 0);
-        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY, alarmIntent);
+        alarmMgr.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                 alarmIntent);
     }
 
     @Override
