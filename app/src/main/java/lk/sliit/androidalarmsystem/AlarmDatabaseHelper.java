@@ -48,13 +48,17 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public String read(int id) {
+    public Alarm read(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT value FROM " + TABLE_NAME + " WHERE id = " + id, null);
         cursor.moveToNext();
         String alarmName = cursor.getString(cursor.getColumnIndex("alarmName"));
+        String time = cursor.getString(cursor.getColumnIndex("time"));
+        int toneId = cursor.getInt(cursor.getColumnIndex("tone"));
+        boolean enabled = cursor.getInt(cursor.getColumnIndex("enabled")) > 0;
+        Alarm alarm = new Alarm(id, alarmName, time, toneId, enabled);
         cursor.close();
-        return alarmName;
+        return alarm;
     }
 
     public List<Alarm> readAll() {
