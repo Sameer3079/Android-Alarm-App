@@ -7,6 +7,7 @@ import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ThemedSpinnerAdapter;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -23,12 +24,15 @@ import org.json.JSONObject;
 
 public class AlarmCreationActivity extends AppCompatActivity {
 
+    private final static String TAG = "APP - AlrmCrtnActvty";
+
     TextView nameTxtView, hourTxtView, minuteTxtView;
     Spinner toneSelector;
     Button createButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_creation);
 
@@ -100,6 +104,13 @@ public class AlarmCreationActivity extends AppCompatActivity {
 
         Alarm alarm = new Alarm(alarmName, time, toneId, true);
         long id = alarmDatabaseHelper.save(alarm);
+        alarmDatabaseHelper.close();
+
+        if (id > 0) {
+            Log.i(TAG, "Alarm Saved to Database");
+        } else {
+            Log.i(TAG, "Alarm Saving FAILED");
+        }
 
         Intent setNewAlarmIntent = new Intent(this, AlarmService.class);
         setNewAlarmIntent.putExtra("command", "NEW_ALARM");

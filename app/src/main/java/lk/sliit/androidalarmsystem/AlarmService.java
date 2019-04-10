@@ -118,7 +118,7 @@ public class AlarmService extends Service {
 
     @Override
     public void onCreate() {
-        Log.i(TAG, "onCreate");
+        Log.i(TAG, "Service Started");
         alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmDatabaseHelper = new AlarmDatabaseHelper(this);
         super.onCreate();

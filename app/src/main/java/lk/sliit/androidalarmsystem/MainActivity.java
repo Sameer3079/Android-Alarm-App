@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "onCreate Lifecycle Method");
+        Log.i(TAG, "onCreate() - MAIN_ACTIVITY");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new CustomRecyclerViewAdapter(this, alarmsArray);
         recyclerView.setAdapter(adapter);
+        Log.i(TAG, "Alarms List has been refreshed");
     }
 
     @Override
@@ -93,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_delete_all) {
+            Log.i(TAG, "User has selected to delete all alarms");
             AlarmDatabaseHelper alarmDatabaseHelper = new AlarmDatabaseHelper(getApplicationContext());
             List<Alarm> alarms = alarmDatabaseHelper.readAll();
             alarmDatabaseHelper.deleteAll();
@@ -103,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
                                 .putExtra("alarmName", alarm.getName()), 0));
             }
             alarmDatabaseHelper.close();
+            Log.i(TAG, "All Alarms have been deleted");
+
             refreshAlarms();
         }
 
