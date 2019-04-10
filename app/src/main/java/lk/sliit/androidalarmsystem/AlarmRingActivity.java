@@ -99,6 +99,7 @@ public class AlarmRingActivity extends AppCompatActivity {
         Log.i(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
 
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_alarm_ring);
 
         mVisible = true;
