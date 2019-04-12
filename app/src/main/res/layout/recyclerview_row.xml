@@ -27,11 +27,12 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="dfgdfg" />
 
-    <CheckBox
-        android:id="@+id/enabled"
-        android:layout_width="wrap_content"
+    <Switch
+        android:id="@+id/alarmEnableSwitch"
+        android:layout_width="45dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="9dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
