@@ -8,7 +8,7 @@ public class Alarm {
     private long alarmToneId;
     private boolean enabled;
 
-    Alarm(long id, String name, String time, long alarmToneId, boolean enabled) {
+    public Alarm(long id, String name, String time, long alarmToneId, boolean enabled) {
         this.id = id;
         this.name = name;
         this.time = time;
@@ -16,7 +16,7 @@ public class Alarm {
         this.enabled = enabled;
     }
 
-    Alarm(String name, String time, long alarmToneId, boolean enabled) {
+    public Alarm(String name, String time, long alarmToneId, boolean enabled) {
         this.name = name;
         this.time = time;
         this.alarmToneId = alarmToneId;
@@ -39,7 +39,7 @@ public class Alarm {
         this.name = name;
     }
 
-    String getTime() {
+    public String getTime() {
         return time;
     }
 
@@ -47,7 +47,7 @@ public class Alarm {
         this.time = time;
     }
 
-    long getAlarmToneId() {
+    public long getAlarmToneId() {
         return alarmToneId;
     }
 
@@ -55,7 +55,7 @@ public class Alarm {
         this.alarmToneId = alarmToneId;
     }
 
-    boolean isEnabled() {
+    public boolean isEnabled() {
         return enabled;
     }
 

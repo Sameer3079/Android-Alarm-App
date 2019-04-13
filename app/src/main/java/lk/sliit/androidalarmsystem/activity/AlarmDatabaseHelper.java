@@ -1,4 +1,4 @@
-package lk.sliit.androidalarmsystem;
+package lk.sliit.androidalarmsystem.activity;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import lk.sliit.androidalarmsystem.Alarm;
 
 public class AlarmDatabaseHelper extends SQLiteOpenHelper {
 
@@ -28,7 +30,7 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    long save(Alarm alarm) {
+    public long save(Alarm alarm) {
         ContentValues cv = new ContentValues();
         cv.put("alarmName", alarm.getName());
         cv.put("time", alarm.getTime());
@@ -40,7 +42,7 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         return id;
     }
 
-    Alarm read(long id) {
+    public Alarm read(long id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE id = " + id, null);
         cursor.moveToNext();
@@ -53,12 +55,12 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         return alarm;
     }
 
-    void deleteAll() {
+    public void deleteAll() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_NAME);
     }
 
-    List<Alarm> readAll() {
+    public List<Alarm> readAll() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
         cursor.moveToNext();
@@ -82,7 +84,7 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
-    List<Alarm> readEnabled(){
+    public List<Alarm> readEnabled(){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE enabled > 0", null);
         cursor.moveToNext();
@@ -106,7 +108,7 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
-    void update(Alarm alarm) {
+    public void update(Alarm alarm) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues cv = new ContentValues();

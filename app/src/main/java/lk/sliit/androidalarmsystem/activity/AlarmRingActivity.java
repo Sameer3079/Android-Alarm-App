@@ -1,4 +1,4 @@
-package lk.sliit.androidalarmsystem;
+package lk.sliit.androidalarmsystem.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -7,12 +7,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+
+import lk.sliit.androidalarmsystem.Alarm;
+import lk.sliit.androidalarmsystem.R;
+import lk.sliit.androidalarmsystem.activity.AlarmDatabaseHelper;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.

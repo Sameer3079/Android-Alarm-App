@@ -2,21 +2,18 @@ package lk.sliit.androidalarmsystem;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.List;
+
+import lk.sliit.androidalarmsystem.activity.AlarmDatabaseHelper;
 
 public class CustomRecyclerViewAdapter
         extends RecyclerView.Adapter<CustomRecyclerViewAdapter.ViewHolder> {
@@ -29,7 +26,7 @@ public class CustomRecyclerViewAdapter
     private Context context;
 
     // Data is passed into the constructor
-    CustomRecyclerViewAdapter(Context context, List<Alarm> data) {
+    public CustomRecyclerViewAdapter(Context context, List<Alarm> data) {
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;

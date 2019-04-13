@@ -1,10 +1,9 @@
-package lk.sliit.androidalarmsystem;
+package lk.sliit.androidalarmsystem.activity;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +17,13 @@ import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import lk.sliit.androidalarmsystem.Alarm;
+import lk.sliit.androidalarmsystem.AlarmCommand;
+import lk.sliit.androidalarmsystem.AlarmReceiver;
+import lk.sliit.androidalarmsystem.AlarmService;
+import lk.sliit.androidalarmsystem.CustomRecyclerViewAdapter;
+import lk.sliit.androidalarmsystem.R;
 
 import static android.widget.Toast.makeText;
 

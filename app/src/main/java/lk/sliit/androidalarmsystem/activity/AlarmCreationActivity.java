@@ -1,4 +1,4 @@
-package lk.sliit.androidalarmsystem;
+package lk.sliit.androidalarmsystem.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -11,9 +11,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import lk.sliit.androidalarmsystem.Alarm;
+import lk.sliit.androidalarmsystem.AlarmCommand;
+import lk.sliit.androidalarmsystem.AlarmService;
+import lk.sliit.androidalarmsystem.R;
+import lk.sliit.androidalarmsystem.activity.AlarmDatabaseHelper;
+
 public class AlarmCreationActivity extends AppCompatActivity {
 
-    private final static String TAG = "APP-AlarmCreationActivity";
+    private final static String TAG = "APP-CreationActivity";
 
     TextView nameTxtView, hourTxtView, minuteTxtView;
     Spinner toneSelector;

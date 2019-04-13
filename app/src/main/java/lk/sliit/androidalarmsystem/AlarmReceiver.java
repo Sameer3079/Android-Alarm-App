@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import lk.sliit.androidalarmsystem.activity.AlarmRingActivity;
+
 public class AlarmReceiver extends BroadcastReceiver {
 
     private String TAG = "APP-AlarmReceiver";
