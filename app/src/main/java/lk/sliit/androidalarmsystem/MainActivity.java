@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         AlarmDatabaseHelper alarmDatabaseHelper = new AlarmDatabaseHelper(getApplicationContext());
 
         Intent startAlarmServiceIntent = new Intent(this, AlarmService.class);
-        startAlarmServiceIntent.putExtra("command", "SET_ALL");
+        startAlarmServiceIntent.putExtra("command", AlarmCommand.SET_ALL);
         startService(startAlarmServiceIntent);
         alarmDatabaseHelper.close();
         refreshAlarms();

@@ -1,6 +1,7 @@
 package lk.sliit.androidalarmsystem;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -26,27 +27,43 @@ public class CustomRecyclerViewAdapter
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     private boolean isInitialized = false;
+    private Context context;
 
-    // data is passed into the constructor
+    // Data is passed into the constructor
     CustomRecyclerViewAdapter(Context context, List<Alarm> data) {
+        this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
 
-    // inflates the row layout from xml when needed
+    // Inflates the row layout from xml when needed
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.recyclerview_row, parent, false);
         return new ViewHolder(view);
     }
 
-    // binds the data to the TextView in each row
+    // Binds the data to the TextView in each row
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Alarm alarm = mData.get(position);
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+        final Alarm alarm = mData.get(holder.getAdapterPosition());
         holder.nameTextView.setText(alarm.getName());
         holder.timeTextView.setText(alarm.getTime());
         holder.isEnabled.setChecked(alarm.isEnabled());
+        holder.isEnabled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.i(TAG, "onCheckedChanged, position = " + holder.getAdapterPosition());
+                alarm.setEnabled(isChecked);
+                AlarmDatabaseHelper db = new AlarmDatabaseHelper(context);
+                db.update(alarm);
+
+                // Updating the alarm which as already been set
+                Intent intent = new Intent(context, AlarmService.class);
+                intent.putExtra("command", AlarmCommand.UPDATE_ALARM);
+                context.startService(intent);
+            }
+        });
     }
 
     // total number of rows
@@ -67,35 +84,11 @@ public class CustomRecyclerViewAdapter
             nameTextView = itemView.findViewById(R.id.alarmName);
             timeTextView = itemView.findViewById(R.id.time);
             isEnabled = itemView.findViewById(R.id.alarmEnableSwitch);
-            isEnabled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isInitialized) {
-//                        try {
-//                            RecyclerView recyclerView = (RecyclerView) buttonView.getParent().getParent();
-//                            int id = recyclerView.getChildAdapterPosition((View) buttonView.getParent());
-//                            String rawData = sharedPreferences.getString("alarms", "[]");
-//                            JSONArray alarmsArray = new JSONArray(rawData);
-//                            Object tempObj = alarmsArray.get(id);
-//                            JSONObject alarmObj = new JSONObject(tempObj.toString());
-//                            alarmObj.put("isEnabled", !alarmObj.getBoolean("isEnabled"));
-//                            alarmsArray.put(id, alarmObj.toString());
-//                            editor.putString("alarms", alarmsArray.toString());
-//                            editor.apply();
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-                        Log.i(TAG, "Toggled Alarm");
-                    } else {
-                        isInitialized = true;
-                    }
-                }
-            });
-            itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
+            Log.i(TAG, "onClick");
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
     }

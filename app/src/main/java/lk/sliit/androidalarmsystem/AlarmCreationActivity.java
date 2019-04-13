@@ -113,7 +113,7 @@ public class AlarmCreationActivity extends AppCompatActivity {
         }
 
         Intent setNewAlarmIntent = new Intent(this, AlarmService.class);
-        setNewAlarmIntent.putExtra("command", "NEW_ALARM");
+        setNewAlarmIntent.putExtra("command", AlarmCommand.SET_ALARM);
         setNewAlarmIntent.putExtra("alarmId", id);
         startService(setNewAlarmIntent);
 

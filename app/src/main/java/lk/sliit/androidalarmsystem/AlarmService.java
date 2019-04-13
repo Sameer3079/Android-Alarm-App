@@ -14,6 +14,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -39,24 +41,26 @@ public class AlarmService extends Service {
             if command =  DELETE_ALL
          */
 
-        String command = intent.getStringExtra("command");
+        Object commandObj = intent.getSerializableExtra("command");
+
+        AlarmCommand command = (AlarmCommand) commandObj;
 
         Log.i(TAG, "onStartCommand, Command = " + command);
 
         switch (command) {
-            case "NEW_ALARM":
+            case SET_ALARM:
                 setNew(intent);
                 break;
-            case "DELETE_ALARM":
+            case CANCEL_ALARM:
                 deleteOne();
                 break;
-            case "MODIFIED_ALARM":
+            case UPDATE_ALARM:
                 update();
                 break;
-            case "DELETE_ALL":
+            case CANCEL_ALL:
                 deleteAll();
                 break;
-            case "SET_ALL":
+            case SET_ALL:
                 setAll();
                 break;
         }
@@ -74,7 +78,7 @@ public class AlarmService extends Service {
     }
 
     private void update() {
-
+        Log.i(TAG, "Update()");
     }
 
     private void deleteAll() {
@@ -82,7 +86,7 @@ public class AlarmService extends Service {
     }
 
     private void deleteOne() {
-
+        Log.i(TAG, "Update()");
     }
 
     private void setAll() {
@@ -113,7 +117,7 @@ public class AlarmService extends Service {
         intent2.putExtra("alarmId", alarm.getId() + "");
         alarmIntent = PendingIntent.getBroadcast(this, (int) alarm.getId(), intent2, 0);
         alarmMgr.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                 alarmIntent);
+                alarmIntent);
     }
 
     @Override

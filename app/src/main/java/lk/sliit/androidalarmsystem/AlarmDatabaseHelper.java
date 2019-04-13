@@ -81,4 +81,17 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
 
         return data;
     }
+
+    void update(Alarm alarm) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+
+        cv.put("alarmName", alarm.getName());
+        cv.put("time", alarm.getTime());
+        cv.put("tone", alarm.getAlarmToneId());
+        cv.put("enabled", alarm.isEnabled());
+
+        db.update(TABLE_NAME, cv, "id = " + alarm.getId(), null);
+    }
 }
