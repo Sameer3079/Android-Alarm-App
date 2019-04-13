@@ -1,4 +1,4 @@
-package lk.sliit.androidalarmsystem.activity;
+package lk.sliit.androidalarmsystem;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,14 +9,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-import lk.sliit.androidalarmsystem.Alarm;
+import lk.sliit.androidalarmsystem.domain.Alarm;
 
 public class AlarmDatabaseHelper extends SQLiteOpenHelper {
 
     private final static String TABLE_NAME = "alarms";
     private final static String DB_NAME = "ctse_alarms.db";
 
-    AlarmDatabaseHelper(Context context) {
+    public AlarmDatabaseHelper(Context context) {
         super(context.getApplicationContext(), DB_NAME, null, 1);
     }
 

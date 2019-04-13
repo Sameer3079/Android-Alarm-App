@@ -1,4 +1,4 @@
-package lk.sliit.androidalarmsystem;
+package lk.sliit.androidalarmsystem.domain;
 
 public class Alarm {
 

@@ -11,11 +11,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import lk.sliit.androidalarmsystem.Alarm;
-import lk.sliit.androidalarmsystem.AlarmCommand;
+import lk.sliit.androidalarmsystem.AlarmDatabaseHelper;
+import lk.sliit.androidalarmsystem.domain.Alarm;
+import lk.sliit.androidalarmsystem.domain.AlarmCommand;
 import lk.sliit.androidalarmsystem.AlarmService;
 import lk.sliit.androidalarmsystem.R;
-import lk.sliit.androidalarmsystem.activity.AlarmDatabaseHelper;
 
 public class AlarmCreationActivity extends AppCompatActivity {
 

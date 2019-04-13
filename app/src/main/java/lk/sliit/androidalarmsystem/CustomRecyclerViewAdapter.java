@@ -13,7 +13,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import lk.sliit.androidalarmsystem.activity.AlarmDatabaseHelper;
+import lk.sliit.androidalarmsystem.domain.Alarm;
+import lk.sliit.androidalarmsystem.domain.AlarmCommand;
 
 public class CustomRecyclerViewAdapter
         extends RecyclerView.Adapter<CustomRecyclerViewAdapter.ViewHolder> {

@@ -13,9 +13,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
-import lk.sliit.androidalarmsystem.Alarm;
+import lk.sliit.androidalarmsystem.AlarmDatabaseHelper;
+import lk.sliit.androidalarmsystem.domain.Alarm;
 import lk.sliit.androidalarmsystem.R;
-import lk.sliit.androidalarmsystem.activity.AlarmDatabaseHelper;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
