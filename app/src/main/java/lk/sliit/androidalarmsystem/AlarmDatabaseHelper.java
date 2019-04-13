@@ -84,7 +84,7 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
 
     List<Alarm> readEnabled(){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE enabled = true", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE enabled > 0", null);
         cursor.moveToNext();
         int idIdx = cursor.getColumnIndex("id");
         int nameIdx = cursor.getColumnIndex("alarmName");

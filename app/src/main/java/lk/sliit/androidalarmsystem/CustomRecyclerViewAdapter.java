@@ -61,6 +61,7 @@ public class CustomRecyclerViewAdapter
                 // Updating the alarm which as already been set
                 Intent intent = new Intent(context, AlarmService.class);
                 intent.putExtra("command", AlarmCommand.UPDATE_ALARM);
+                intent.putExtra("alarmId", alarm.getId());
                 context.startService(intent);
             }
         });

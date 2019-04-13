@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.List;
@@ -39,7 +40,7 @@ public class AlarmService extends Service {
                 deleteOne();
                 break;
             case UPDATE_ALARM:
-                update();
+                update(intent);
                 break;
             case CANCEL_ALL:
                 deleteAll();
@@ -60,16 +61,35 @@ public class AlarmService extends Service {
         setOne(alarm);
     }
 
-    private void update() {
+    private void update(Intent intent) {
         Log.i(TAG, "Update()");
+
+        long id = intent.getLongExtra("alarmId", -1);
+
+        if (id == -1) {
+            Toast.makeText(this, "Failed to find alarm", Toast.LENGTH_LONG);
+            return;
+        }
+        // Get Details of the alarm
+
+        AlarmDatabaseHelper db = new AlarmDatabaseHelper(this);
+        Alarm alarm = db.read(id);
+        if (alarm.isEnabled()) {
+            setOne(alarm);
+        } else {
+            alarmMgr.cancel(PendingIntent.getBroadcast(this, (int) alarm.getId(),
+                    new Intent(this, AlarmReceiver.class), 0));
+        }
     }
 
     private void deleteAll() {
+        Log.i(TAG, "deleteAll()");
         // Done within the Main Activity itself
     }
 
+    // TODO: Implement
     private void deleteOne() {
-        Log.i(TAG, "Update()");
+        Log.i(TAG, "deleteOne()");
     }
 
     private void setAll() {

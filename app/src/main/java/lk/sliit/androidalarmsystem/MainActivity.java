@@ -95,16 +95,20 @@ public class MainActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.action_delete_all) {
             Log.i(TAG, "User has selected to delete all alarms");
+
+            // Remove the Alarm records from the database
             AlarmDatabaseHelper alarmDatabaseHelper = new AlarmDatabaseHelper(getApplicationContext());
             List<Alarm> alarms = alarmDatabaseHelper.readAll();
             alarmDatabaseHelper.deleteAll();
+            alarmDatabaseHelper.close();
+
+            // Cancel the alarms
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             for (Alarm alarm : alarms) {
                 alarmManager.cancel(PendingIntent.getBroadcast(this, (int) alarm.getId(),
                         new Intent(this, AlarmReceiver.class)
                                 .putExtra("alarmName", alarm.getName()), 0));
             }
-            alarmDatabaseHelper.close();
             Log.i(TAG, "All Alarms have been deleted");
 
             refreshAlarms();
