@@ -1,30 +1,19 @@
 package lk.sliit.androidalarmsystem;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 public class AlarmCreationActivity extends AppCompatActivity {
 
-    private final static String TAG = "APP - AlrmCrtnActvty";
+    private final static String TAG = "APP-AlarmCreationActivity";
 
     TextView nameTxtView, hourTxtView, minuteTxtView;
     Spinner toneSelector;
@@ -32,7 +21,7 @@ public class AlarmCreationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "onCreate()");
+        Log.i(TAG, "Started Activity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_creation);
 

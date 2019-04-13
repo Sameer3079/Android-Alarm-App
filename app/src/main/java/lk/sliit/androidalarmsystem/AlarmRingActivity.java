@@ -20,7 +20,7 @@ import android.widget.TextView;
  */
 public class AlarmRingActivity extends AppCompatActivity {
 
-    private final static String TAG = "APP - AlarmRingActivity";
+    private final static String TAG = "APP-AlarmRingActivity";
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -96,7 +96,7 @@ public class AlarmRingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "onCreate()");
+        Log.i(TAG, "Started Activity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_ring);
 
@@ -113,7 +113,6 @@ public class AlarmRingActivity extends AppCompatActivity {
         Alarm alarm = helper.read(id);
 
         alarmName.setText(alarm.getName());
-        Log.i(TAG, "Alarm Name = " + alarm.getName());
 
         // Set up the user interaction to manually show or hide the system UI.
         mContentView.setOnClickListener(new View.OnClickListener() {

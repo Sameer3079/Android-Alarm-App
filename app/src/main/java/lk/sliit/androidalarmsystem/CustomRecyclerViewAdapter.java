@@ -21,12 +21,11 @@ import java.util.List;
 public class CustomRecyclerViewAdapter
         extends RecyclerView.Adapter<CustomRecyclerViewAdapter.ViewHolder> {
 
-    private final static String TAG = "APP - R_ViewAdapter";
+    private final static String TAG = "APP-CustomRecyclerViewAdapter";
 
     private List<Alarm> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
-    private boolean isInitialized = false;
     private Context context;
 
     // Data is passed into the constructor
@@ -53,7 +52,6 @@ public class CustomRecyclerViewAdapter
         holder.isEnabled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.i(TAG, "onCheckedChanged, position = " + holder.getAdapterPosition());
                 alarm.setEnabled(isChecked);
                 AlarmDatabaseHelper db = new AlarmDatabaseHelper(context);
                 db.update(alarm);

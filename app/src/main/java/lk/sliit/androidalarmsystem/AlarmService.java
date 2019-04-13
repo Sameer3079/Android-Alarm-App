@@ -14,7 +14,7 @@ import java.util.List;
 
 public class AlarmService extends Service {
 
-    private final static String TAG = "APP - AlarmService";
+    private final static String TAG = "APP-AlarmService";
     private AlarmManager alarmMgr;
     private PendingIntent alarmIntent;
     AlarmDatabaseHelper alarmDatabaseHelper;
@@ -30,20 +30,18 @@ public class AlarmService extends Service {
         Object commandObj = intent.getSerializableExtra("command");
         AlarmCommand command = (AlarmCommand) commandObj;
 
-        Log.i(TAG, "onStartCommand, Command = " + command);
-
         switch (command) {
             case SET_ALARM:
                 setNew(intent);
                 break;
             case CANCEL_ALARM:
-                deleteOne();
+                cancelOne();
                 break;
             case UPDATE_ALARM:
                 update(intent);
                 break;
             case CANCEL_ALL:
-                deleteAll();
+                cancelAll();
                 break;
             case SET_ALL:
                 setAll();
@@ -54,15 +52,13 @@ public class AlarmService extends Service {
     }
 
     private void setNew(Intent intent) {
-        Log.i(TAG, "setNew");
-
         long id = intent.getLongExtra("alarmId", 0);
         Alarm alarm = alarmDatabaseHelper.read(id);
         setOne(alarm);
+        Log.i(TAG, "New Alarm Set");
     }
 
     private void update(Intent intent) {
-        Log.i(TAG, "Update()");
 
         long id = intent.getLongExtra("alarmId", -1);
 
@@ -80,31 +76,31 @@ public class AlarmService extends Service {
             alarmMgr.cancel(PendingIntent.getBroadcast(this, (int) alarm.getId(),
                     new Intent(this, AlarmReceiver.class), 0));
         }
+        Log.i(TAG, "Alarm Updated");
     }
 
-    private void deleteAll() {
-        Log.i(TAG, "deleteAll()");
-        // Done within the Main Activity itself
+    // Done within the Main Activity itself
+    private void cancelAll() {
+        Log.i(TAG, "All Alarms Cancelled");
     }
 
     // TODO: Implement
-    private void deleteOne() {
-        Log.i(TAG, "deleteOne()");
+    private void cancelOne() {
+        Log.i(TAG, "Alarm Cancelled");
     }
 
     private void setAll() {
-        Log.i(TAG, "setAll");
         AlarmDatabaseHelper alarmDatabaseHelper = new AlarmDatabaseHelper(this);
 
         List<Alarm> alarmsArray = alarmDatabaseHelper.readEnabled();
         for (Alarm alarm : alarmsArray) {
             setOne(alarm);
         }
+        Log.i(TAG, "All Alarms Set");
 
     }
 
     private void setOne(Alarm alarm) {
-        Log.i(TAG, "setOne, alarmName = " + alarm.getName());
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.SECOND, 0);

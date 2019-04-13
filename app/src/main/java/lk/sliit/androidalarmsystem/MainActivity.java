@@ -23,14 +23,14 @@ import static android.widget.Toast.makeText;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final static String TAG = "APP - MainActivity";
+    private final static String TAG = "APP-MainActivity";
     RecyclerView recyclerView;
     CustomRecyclerViewAdapter adapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "onCreate() - MAIN_ACTIVITY");
+        Log.i(TAG, "Started Activity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new CustomRecyclerViewAdapter(this, alarmsArray);
         recyclerView.setAdapter(adapter);
-        Log.i(TAG, "Alarms List has been refreshed");
+        Log.i(TAG, "Alarms Refreshed");
     }
 
     @Override
@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_delete_all) {
-            Log.i(TAG, "User has selected to delete all alarms");
 
             // Remove the Alarm records from the database
             AlarmDatabaseHelper alarmDatabaseHelper = new AlarmDatabaseHelper(getApplicationContext());
@@ -109,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                         new Intent(this, AlarmReceiver.class)
                                 .putExtra("alarmName", alarm.getName()), 0));
             }
-            Log.i(TAG, "All Alarms have been deleted");
+            Log.i(TAG, "Deleted All Alarms");
 
             refreshAlarms();
         }
