@@ -88,7 +88,8 @@ public class QuestionDatabaseHelper extends SQLiteOpenHelper {
         // Inserting the Questions
         db.execSQL("INSERT INTO " + QUESTION_TABLE + " VALUES " +
                 "(1, 'What is the force that binds the neutrons and protons in a nucleus?', 2)," +
-                "(2, 'Which of the following is not a valid conservation law of classical Physics?', 6)," +
+                "(2, 'Which of the following is not a valid " +
+                "conservation law of classical Physics?', 6)," +
                 "(3, 'What is the range of Strong Nuclear force?', 11)," +
                 "(4, 'What is the phenomenon Nuclear Reactors are based on?', 15)");
 

@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -109,7 +110,8 @@ public class MainActivity extends AppCompatActivity {
         } else if (id == R.id.action_delete_all) {
 
             // Remove the Alarm records from the database
-            AlarmDatabaseHelper alarmDatabaseHelper = new AlarmDatabaseHelper(getApplicationContext());
+            AlarmDatabaseHelper alarmDatabaseHelper =
+                    new AlarmDatabaseHelper(getApplicationContext());
             List<Alarm> alarms = alarmDatabaseHelper.readAll();
             alarmDatabaseHelper.deleteAll();
             alarmDatabaseHelper.close();
@@ -129,7 +131,10 @@ public class MainActivity extends AppCompatActivity {
             try {
                 db.fillDatabase();
             } catch (SQLiteConstraintException exception) {
-                Toast.makeText(this, "Questions are already inserted", Toast.LENGTH_LONG).show();
+                Snackbar snackbar = Snackbar
+                        .make(findViewById(R.id.main_activity),
+                                "Questions are already inserted", Snackbar.LENGTH_LONG);
+                snackbar.show();
             }
         }
 

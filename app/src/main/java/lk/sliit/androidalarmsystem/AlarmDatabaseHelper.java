@@ -21,7 +21,13 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
     public AlarmDatabaseHelper(Context context) {
         super(context.getApplicationContext(), DB_NAME, null, 1);
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (id integer PRIMARY KEY AUTOINCREMENT NOT NULL, alarmName text, time string, tone number, enabled boolean)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
+                " (id integer PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                " alarmName text," +
+                " time string," +
+                " tone number," +
+                " enabled boolean" +
+                ")");
     }
 
     @Override
@@ -48,7 +54,8 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
 
     public Alarm read(long id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE id = " + id, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME +
+                " WHERE id = " + id, null);
         cursor.moveToNext();
         String alarmName = cursor.getString(cursor.getColumnIndex("alarmName"));
         String time = cursor.getString(cursor.getColumnIndex("time"));
@@ -88,9 +95,10 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
-    public List<Alarm> readEnabled(){
+    public List<Alarm> readEnabled() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE enabled > 0", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME +
+                " WHERE enabled > 0", null);
         cursor.moveToNext();
         int idIdx = cursor.getColumnIndex("id");
         int nameIdx = cursor.getColumnIndex("alarmName");
