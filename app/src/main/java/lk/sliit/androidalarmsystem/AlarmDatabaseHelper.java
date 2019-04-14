@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,16 +14,19 @@ import lk.sliit.androidalarmsystem.domain.Alarm;
 
 public class AlarmDatabaseHelper extends SQLiteOpenHelper {
 
+    private final static String TAG = "APP-AlarmDbHelper";
     private final static String TABLE_NAME = "alarms";
     private final static String DB_NAME = "ctse_alarms.db";
 
     public AlarmDatabaseHelper(Context context) {
         super(context.getApplicationContext(), DB_NAME, null, 1);
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (id integer PRIMARY KEY AUTOINCREMENT NOT NULL, alarmName text, time string, tone number, enabled boolean)");
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + TABLE_NAME + " (id integer PRIMARY KEY AUTOINCREMENT NOT NULL, alarmName text, time string, tone number, enabled boolean)");
+        Log.i(TAG, "onCreate");
     }
 
     @Override
