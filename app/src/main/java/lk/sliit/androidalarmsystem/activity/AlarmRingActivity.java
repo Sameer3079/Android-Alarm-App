@@ -2,6 +2,8 @@ package lk.sliit.androidalarmsystem.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -151,6 +153,9 @@ public class AlarmRingActivity extends AppCompatActivity {
         choice_2TxtView.setText(choicesList.get(1));
         choice_3TxtView.setText(choicesList.get(2));
         choice_4TxtView.setText(choicesList.get(3));
+
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, Alarm.getToneResId((int) alarm.getAlarmToneId()));
+        mediaPlayer.start();
 
         // Set up the user interaction to manually show or hide the system UI.
         mContentView.setOnClickListener(new View.OnClickListener() {

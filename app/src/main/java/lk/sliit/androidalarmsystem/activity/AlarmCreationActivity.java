@@ -1,10 +1,12 @@
 package lk.sliit.androidalarmsystem.activity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -21,9 +23,11 @@ public class AlarmCreationActivity extends AppCompatActivity {
 
     private final static String TAG = "APP-CreationActivity";
 
-    TextView nameTxtView, hourTxtView, minuteTxtView;
-    Spinner toneSelector;
-    Button createButton;
+    private TextView nameTxtView, hourTxtView, minuteTxtView;
+    private Spinner toneSelector;
+    private Button createButton;
+    private MediaPlayer mediaPlayer;
+    private boolean isInitialized = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +45,31 @@ public class AlarmCreationActivity extends AppCompatActivity {
                 R.array.tones_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         toneSelector.setAdapter(adapter);
+        toneSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if (isInitialized) {
+                    Log.i(TAG, "Tone Selected");
+                    try {
+                        mediaPlayer.stop();
+                    } catch (NullPointerException e) {
+
+                    }
+                    mediaPlayer = MediaPlayer.create(getApplicationContext(), Alarm.getToneResId(position));
+                    mediaPlayer.start();
+                } else {
+                    isInitialized = true;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+                Log.i(TAG, "Nothing Selected");
+            }
+
+        });
 
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
