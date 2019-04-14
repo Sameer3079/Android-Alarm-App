@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.HashMap;
+import java.util.TreeMap;
 
 import lk.sliit.androidalarmsystem.domain.Question;
 
@@ -50,7 +51,7 @@ public class QuestionDatabaseHelper extends SQLiteOpenHelper {
         // Get Question
         Cursor questionCursor = db.rawQuery("SELECT * " +
                 "FROM " + QUESTION_TABLE +
-                "WHERE id = " + questionId, null);
+                " WHERE id = " + questionId, null);
         questionCursor.moveToNext();
         int idIndex = questionCursor.getColumnIndex("id");
         int questionIndex = questionCursor.getColumnIndex("question");
@@ -62,14 +63,14 @@ public class QuestionDatabaseHelper extends SQLiteOpenHelper {
 
         // Get Choices
         Cursor choiceCursor = db.rawQuery("SELECT a.id, a.answer " +
-                        "FROM " + QUESTION_TABLE + " q, " + ANSWER_TABLE + " a," +
-                        "WHERE a.question = q.id AND q.id = " + questionId,
+                        "FROM " + QUESTION_TABLE + " q, " + ANSWER_TABLE + " a " +
+                        " WHERE a.question = q.id AND q.id = " + questionId,
                 null);
         choiceCursor.moveToNext();
         // Getting the indexes of the columns
         idIndex = choiceCursor.getColumnIndex("id");
         answerIndex = choiceCursor.getColumnIndex("answer");
-        HashMap<Long, String> choices = new HashMap<>();
+        TreeMap<Long, String> choices = new TreeMap<>();
         while (!choiceCursor.isAfterLast()) {
             long id = choiceCursor.getLong(idIndex);
             String choice = choiceCursor.getString(answerIndex);
@@ -124,11 +125,10 @@ public class QuestionDatabaseHelper extends SQLiteOpenHelper {
     public int getQuestionsCount() {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT count(id) AS 'count' " +
+        Cursor cursor = db.rawQuery("SELECT count(*) " +
                 "FROM " + QUESTION_TABLE, null);
-
-        int countIndex = cursor.getColumnIndex("count");
-        int count = cursor.getInt(countIndex);
+        cursor.moveToNext();
+        int count = cursor.getInt(0);
 
         db.close();
         return count;

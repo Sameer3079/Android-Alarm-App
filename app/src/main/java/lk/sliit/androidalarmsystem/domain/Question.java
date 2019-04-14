@@ -1,12 +1,13 @@
 package lk.sliit.androidalarmsystem.domain;
 
 import java.util.HashMap;
+import java.util.TreeMap;
 
 public class Question {
 
     private long id;
     private String question;
-    private HashMap<Long, String> choices;
+    private TreeMap<Long, String> choices;
     private long answer;
 
     public long getId() {
@@ -25,11 +26,11 @@ public class Question {
         this.question = question;
     }
 
-    public HashMap<Long, String> getChoices() {
+    public TreeMap<Long, String> getChoices() {
         return choices;
     }
 
-    public void setChoices(HashMap<Long, String> choices) {
+    public void setChoices(TreeMap<Long, String> choices) {
         this.choices = choices;
     }
 

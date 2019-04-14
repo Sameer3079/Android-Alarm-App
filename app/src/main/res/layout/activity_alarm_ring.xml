@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@android:color/holo_red_dark" />
+        app:srcCompat="@android:color/holo_green_light" />
 
     <Button
         android:id="@+id/submitBtn"
@@ -35,7 +35,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="52dp"
-        android:text="alarm_name"
         android:textColor="@android:color/white"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,7 +46,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="168dp"
-        android:text="question"
         android:textColor="@android:color/white"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -70,32 +68,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="choice 1"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:textColorLink="@android:color/white"
+            android:textSize="24sp" />
 
         <RadioButton
             android:id="@+id/choice_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="choice 2"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:textColorLink="@android:color/white"
+            android:textSize="24sp" />
 
         <RadioButton
             android:id="@+id/choice_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="choice 3"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:textColorLink="@android:color/white"
+            android:textSize="24sp" />
 
         <RadioButton
             android:id="@+id/choice_4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="choice 4"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:textColorLink="@android:color/white"
+            android:textSize="24sp" />
 
     </RadioGroup>
 </android.support.constraint.ConstraintLayout>

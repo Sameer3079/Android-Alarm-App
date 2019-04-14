@@ -13,9 +13,17 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
+import java.util.Set;
+import java.util.TreeMap;
+
 import lk.sliit.androidalarmsystem.AlarmDatabaseHelper;
+import lk.sliit.androidalarmsystem.QuestionDatabaseHelper;
 import lk.sliit.androidalarmsystem.domain.Alarm;
 import lk.sliit.androidalarmsystem.R;
+import lk.sliit.androidalarmsystem.domain.Question;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -116,6 +124,33 @@ public class AlarmRingActivity extends AppCompatActivity {
         Alarm alarm = helper.read(id);
 
         alarmName.setText(alarm.getName());
+
+        QuestionDatabaseHelper db = new QuestionDatabaseHelper(getApplicationContext());
+        int count = db.getQuestionsCount();
+
+        Random random = new Random();
+        int questionId = random.nextInt(count) + 1;
+        Log.i(TAG, "Question ID = " + questionId);
+
+        Question question = db.getQuestion(questionId);
+        TreeMap<Long, String> choices = question.getChoices();
+
+        TextView questionTxtView = findViewById(R.id.question);
+        TextView choice_1TxtView = findViewById(R.id.choice_1);
+        TextView choice_2TxtView = findViewById(R.id.choice_2);
+        TextView choice_3TxtView = findViewById(R.id.choice_3);
+        TextView choice_4TxtView = findViewById(R.id.choice_4);
+
+        questionTxtView.setText(question.getQuestion());
+        Set<Long> ids = choices.keySet();
+        ArrayList<String> choicesList = new ArrayList<>();
+        for (Long choiceId : ids) {
+            choicesList.add(choices.get(choiceId));
+        }
+        choice_1TxtView.setText(choicesList.get(0));
+        choice_2TxtView.setText(choicesList.get(1));
+        choice_3TxtView.setText(choicesList.get(2));
+        choice_4TxtView.setText(choicesList.get(3));
 
         // Set up the user interaction to manually show or hide the system UI.
         mContentView.setOnClickListener(new View.OnClickListener() {
