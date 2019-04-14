@@ -141,6 +141,12 @@ public class AlarmCreationActivity extends AppCompatActivity {
         setNewAlarmIntent.putExtra("alarmId", id);
         startService(setNewAlarmIntent);
 
+        try {
+            mediaPlayer.stop();
+        } catch (NullPointerException e) {
+
+        }
+
         this.finish();
     }
 }
