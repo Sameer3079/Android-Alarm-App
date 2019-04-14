@@ -2,6 +2,7 @@
     <string name="app_name">Android Alarm System</string>
     <string name="action_settings">Settings</string>
     <string name="delete_all">Delete All Alarms</string>
+    <string name="insert_questions">Insert Questions</string>
     <string name="alarm_creation_title">Create New Alarm</string>
     <string name="alarm_name">Name</string>
     <string name="alarm_name_hint">Alarm Name</string>

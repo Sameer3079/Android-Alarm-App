@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ import lk.sliit.androidalarmsystem.AlarmReceiver;
 import lk.sliit.androidalarmsystem.AlarmService;
 import lk.sliit.androidalarmsystem.CustomRecyclerViewAdapter;
 import lk.sliit.androidalarmsystem.R;
+import lk.sliit.androidalarmsystem.domain.Question;
 
 import static android.widget.Toast.makeText;
 
@@ -121,6 +124,13 @@ public class MainActivity extends AppCompatActivity {
             Log.i(TAG, "Deleted All Alarms");
 
             refreshAlarms();
+        } else if (id == R.id.insert_questions) {
+            QuestionDatabaseHelper db = new QuestionDatabaseHelper(this);
+            try {
+                db.fillDatabase();
+            } catch (SQLiteConstraintException exception) {
+                Toast.makeText(this, "Questions are already inserted", Toast.LENGTH_LONG).show();
+            }
         }
 
         return super.onOptionsItemSelected(item);

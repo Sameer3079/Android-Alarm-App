@@ -2,6 +2,7 @@ package lk.sliit.androidalarmsystem;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -81,7 +82,7 @@ public class QuestionDatabaseHelper extends SQLiteOpenHelper {
         return questionObj;
     }
 
-    public void fillDatabase() {
+    public void fillDatabase() throws SQLiteConstraintException {
         SQLiteDatabase db = this.getWritableDatabase();
 
         // Inserting the Questions
