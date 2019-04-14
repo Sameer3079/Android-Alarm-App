@@ -1,5 +1,7 @@
 package lk.sliit.androidalarmsystem.domain;
 
+import lk.sliit.androidalarmsystem.R;
+
 public class Alarm {
 
     private long id;
@@ -61,5 +63,28 @@ public class Alarm {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public static int getToneResId(int toneId) {
+        int resId;
+        switch (toneId) {
+            case 0:
+                resId = R.raw.wecker_sound;
+                break;
+            case 1:
+                resId = R.raw.eerie_clock_chimes_sound;
+                break;
+            case 2:
+                resId = R.raw.cool_alarm_tone_notification_sound;
+                break;
+            case 3:
+                resId = R.raw.gentle_wake_alarm_clock;
+                break;
+            default:
+                resId = R.raw.wake_up_sounds;
+                break;
+        }
+
+        return resId;
     }
 }
