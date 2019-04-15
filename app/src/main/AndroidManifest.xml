@@ -13,6 +13,7 @@
             android:name=".activity.AlarmRingActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_alarm_ring"
+            android:showOnLockScreen="true"
             android:theme="@style/FullscreenTheme"></activity>
         <activity android:name=".activity.AlarmCreationActivity" />
         <activity
