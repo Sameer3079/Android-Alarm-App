@@ -9,12 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activity.AlarmEditActivity"></activity>
         <activity
             android:name=".activity.AlarmRingActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_alarm_ring"
             android:showOnLockScreen="true"
-            android:theme="@style/FullscreenTheme"></activity>
+            android:theme="@style/FullscreenTheme" />
         <activity android:name=".activity.AlarmCreationActivity" />
         <activity
             android:name=".activity.MainActivity"
