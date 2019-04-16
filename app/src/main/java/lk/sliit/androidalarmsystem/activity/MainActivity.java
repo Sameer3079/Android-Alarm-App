@@ -68,6 +68,13 @@ public class MainActivity extends AppCompatActivity {
         startService(startAlarmServiceIntent);
         alarmDatabaseHelper.close();
         refreshAlarms();
+
+        QuestionDatabaseHelper db = new QuestionDatabaseHelper(this);
+        try {
+            db.fillDatabase();
+        } catch (SQLiteConstraintException exception) {
+            Log.i(TAG, "Questions have been inserted");
+        }
     }
 
     private void refreshAlarms() {
@@ -126,16 +133,6 @@ public class MainActivity extends AppCompatActivity {
             Log.i(TAG, "Deleted All Alarms");
 
             refreshAlarms();
-        } else if (id == R.id.insert_questions) {
-            QuestionDatabaseHelper db = new QuestionDatabaseHelper(this);
-            try {
-                db.fillDatabase();
-            } catch (SQLiteConstraintException exception) {
-                Snackbar snackbar = Snackbar
-                        .make(findViewById(R.id.main_activity),
-                                "Questions are already inserted", Snackbar.LENGTH_LONG);
-                snackbar.show();
-            }
         }
 
         return super.onOptionsItemSelected(item);

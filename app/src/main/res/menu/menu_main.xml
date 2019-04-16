@@ -12,9 +12,4 @@
         android:orderInCategory="100"
         android:title="@string/delete_all"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/insert_questions"
-        android:orderInCategory="100"
-        android:title="@string/insert_questions"
-        app:showAsAction="never" />
 </menu>
