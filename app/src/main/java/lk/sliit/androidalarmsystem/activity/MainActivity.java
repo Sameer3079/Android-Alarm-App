@@ -93,6 +93,14 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new CustomRecyclerViewAdapter(this, alarmsArray);
+        adapter.setClickListener(new CustomRecyclerViewAdapter.ItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Log.i(TAG, "Item Click");
+                Intent intent = new Intent(getApplicationContext(), AlarmEditActivity.class);
+                startActivity(intent);
+            }
+        });
         recyclerView.setAdapter(adapter);
         Log.i(TAG, "Alarms Refreshed");
     }
