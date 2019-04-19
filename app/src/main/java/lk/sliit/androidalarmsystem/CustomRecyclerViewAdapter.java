@@ -1,5 +1,6 @@
 package lk.sliit.androidalarmsystem;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +25,7 @@ public class CustomRecyclerViewAdapter
     private List<Alarm> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+    private ItemLongClickListener mLongClickListener;
     private Context context;
 
     // Data is passed into the constructor
@@ -71,7 +73,7 @@ public class CustomRecyclerViewAdapter
 
 
     // stores and recycles views as they are scrolled off screen
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         TextView nameTextView;
         TextView timeTextView;
         Switch isEnabled;
@@ -83,12 +85,22 @@ public class CustomRecyclerViewAdapter
             isEnabled = itemView.findViewById(R.id.alarmEnableSwitch);
 
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
             Log.i(TAG, "onClick");
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+            if (mClickListener != null)
+                mClickListener.onItemClick(view, getAdapterPosition());
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            Log.i(TAG, "onLongClick");
+            if (mLongClickListener != null)
+                mLongClickListener.onItemLongClick(view, getAdapterPosition());
+            return true;
         }
     }
 
@@ -102,8 +114,16 @@ public class CustomRecyclerViewAdapter
         this.mClickListener = itemClickListener;
     }
 
+    public void setLongClickListener(ItemLongClickListener itemLongClickListener) {
+        this.mLongClickListener = itemLongClickListener;
+    }
+
     // parent activity will implement this method to respond to click events
     public interface ItemClickListener {
         void onItemClick(View view, int position);
+    }
+
+    public interface ItemLongClickListener {
+        void onItemLongClick(View view, int position);
     }
 }

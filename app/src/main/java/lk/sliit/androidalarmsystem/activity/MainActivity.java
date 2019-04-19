@@ -105,6 +105,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        adapter.setLongClickListener(new CustomRecyclerViewAdapter.ItemLongClickListener() {
+            @Override
+            public void onItemLongClick(View view, int position) {
+                Log.i(TAG, "Item Long Click");
+            }
+        });
         recyclerView.setAdapter(adapter);
         Log.i(TAG, "Alarms Refreshed");
     }
