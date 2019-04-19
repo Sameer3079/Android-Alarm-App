@@ -191,7 +191,7 @@ public class AlarmRingActivity extends AppCompatActivity {
             choiceIdMap.put(x, choiceId);
             x++;
         }
-        Log.i(TAG, choiceIdMap.toString());
+
         choice_1TxtView.setText(choicesList.get(0));
         choice_2TxtView.setText(choicesList.get(1));
         choice_3TxtView.setText(choicesList.get(2));

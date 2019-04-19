@@ -173,9 +173,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        } else if (id == R.id.action_delete_all) {
+        if (id == R.id.action_delete_all) {
 
             // Remove the Alarm records from the database
             AlarmDatabaseHelper alarmDatabaseHelper =
