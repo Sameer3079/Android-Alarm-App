@@ -127,6 +127,16 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM " + TABLE_NAME);
     }
 
+    public boolean deleteOne(long alarmId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int numberOfRowsAffected = db.delete(TABLE_NAME, "id = " + alarmId, null);
+
+        if (numberOfRowsAffected > 0)
+            return true;
+        else
+            return false;
+    }
+
     public List<Alarm> readAll() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
