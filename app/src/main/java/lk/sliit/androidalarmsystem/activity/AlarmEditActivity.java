@@ -58,6 +58,11 @@ public class AlarmEditActivity extends AppCompatActivity {
         updateButton = findViewById(R.id.updateButton);
 
         toneSelectorSpinner = findViewById(R.id.toneSelectorSpinner);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.tones_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        toneSelectorSpinner.setAdapter(adapter);
     }
 
     private void setAlarmData(long alarmId) {
@@ -72,10 +77,8 @@ public class AlarmEditActivity extends AppCompatActivity {
         hourTxt.setText(timeData[0]);
         minuteTxt.setText(timeData[1]);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.tones_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        toneSelectorSpinner.setAdapter(adapter);
+        toneSelectorSpinner.setSelection(
+                Integer.parseInt(new Long(alarm.getAlarmToneId()).toString()));
 
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
