@@ -4,10 +4,12 @@
     <string name="delete_all">Delete All Alarms</string>
     <string name="insert_questions">Insert Questions</string>
     <string name="alarm_creation_title">Create New Alarm</string>
+    <string name="alarm_edit_title">Update Alarm</string>
     <string name="alarm_name">Name</string>
     <string name="alarm_name_hint">Alarm Name</string>
     <string name="time_label">Time:</string>
     <string name="create_button">Create</string>
+    <string name="update_button">Update</string>
     <string name="tone_label">Alarm Tone</string>
     <string name="hour_input_hint">HH</string>
     <string name="minute_input_hint">MM</string>

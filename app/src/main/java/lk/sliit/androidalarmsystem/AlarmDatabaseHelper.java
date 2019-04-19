@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -52,6 +53,37 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         return id;
     }
 
+    public AlarmRejectStatus doesRecordExist(long alarmId, String alarmName, String time) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String queryString = "SELECT * " +
+                "FROM " + TABLE_NAME +
+                " WHERE alarmName = '" + alarmName + "'";
+        if (alarmId >= 0) {
+            queryString = queryString.concat(" AND id != " + alarmId);
+        }
+        Cursor cursor = db.rawQuery(queryString, null);
+        cursor.moveToNext();
+        if (!cursor.isAfterLast()) {
+            return AlarmRejectStatus.DUPLICATE_NAME;
+        }
+
+        cursor.close();
+        queryString = "SELECT * " +
+                "FROM " + TABLE_NAME +
+                " WHERE time = '" + time + "'";
+        if (alarmId >= 0) {
+            queryString = queryString.concat(" AND id != " + alarmId);
+        }
+        cursor = db.rawQuery(queryString, null);
+        cursor.moveToNext();
+        if (!cursor.isAfterLast()) {
+            return AlarmRejectStatus.DUPLICATE_TIME;
+        }
+        cursor.close();
+
+        return AlarmRejectStatus.VALID;
+    }
+
     public Alarm read(long id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME +
@@ -63,7 +95,31 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         boolean enabled = cursor.getInt(cursor.getColumnIndex("enabled")) > 0;
         Alarm alarm = new Alarm(id, alarmName, time, toneId, enabled);
         cursor.close();
+        db.close();
         return alarm;
+    }
+
+    public Alarm getByName(String alarmName) throws NullPointerException {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // TODO:
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME +
+                " WHERE alarmName = " + alarmName, null);
+
+        cursor.moveToNext();
+
+        if (cursor.isAfterLast()) {
+            throw new NullPointerException();
+        } else {
+            long id = cursor.getLong(cursor.getColumnIndex("id"));
+            String name = cursor.getString(cursor.getColumnIndex("alarmName"));
+            String time = cursor.getString(cursor.getColumnIndex("time"));
+            int toneId = cursor.getInt(cursor.getColumnIndex("tone"));
+            boolean enabled = cursor.getInt(cursor.getColumnIndex("enabled")) > 0;
+            Alarm alarm = new Alarm(id, name, time, toneId, enabled);
+            cursor.close();
+            return alarm;
+        }
     }
 
     public void deleteAll() {
@@ -120,7 +176,8 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
-    public void update(Alarm alarm) {
+    // Returns the number of rows affected
+    public int update(Alarm alarm) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
@@ -130,6 +187,6 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
         cv.put("tone", alarm.getAlarmToneId());
         cv.put("enabled", alarm.isEnabled());
 
-        db.update(TABLE_NAME, cv, "id = " + alarm.getId(), null);
+        return db.update(TABLE_NAME, cv, "id = " + alarm.getId(), null);
     }
 }

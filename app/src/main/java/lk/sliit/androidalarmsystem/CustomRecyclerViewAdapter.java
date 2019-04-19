@@ -19,7 +19,7 @@ import lk.sliit.androidalarmsystem.domain.AlarmCommand;
 public class CustomRecyclerViewAdapter
         extends RecyclerView.Adapter<CustomRecyclerViewAdapter.ViewHolder> {
 
-    private final static String TAG = "APP-CustomRecyclerViewAdapter";
+    private final static String TAG = "APP-CstmAdapter";
 
     private List<Alarm> mData;
     private LayoutInflater mInflater;
@@ -81,6 +81,8 @@ public class CustomRecyclerViewAdapter
             nameTextView = itemView.findViewById(R.id.alarmName);
             timeTextView = itemView.findViewById(R.id.time);
             isEnabled = itemView.findViewById(R.id.alarmEnableSwitch);
+
+            itemView.setOnClickListener(this);
         }
 
         @Override
@@ -96,7 +98,7 @@ public class CustomRecyclerViewAdapter
     }
 
     // allows clicks events to be caught
-    void setClickListener(ItemClickListener itemClickListener) {
+    public void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
 

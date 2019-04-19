@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import lk.sliit.androidalarmsystem.AlarmDatabaseHelper;
+import lk.sliit.androidalarmsystem.AlarmRejectStatus;
 import lk.sliit.androidalarmsystem.domain.Alarm;
 import lk.sliit.androidalarmsystem.domain.AlarmCommand;
 import lk.sliit.androidalarmsystem.AlarmService;
@@ -81,7 +82,7 @@ public class AlarmCreationActivity extends AppCompatActivity {
 
     private void createAlarm() {
 
-        AlarmDatabaseHelper alarmDatabaseHelper = new AlarmDatabaseHelper(getApplicationContext());
+        AlarmDatabaseHelper db = new AlarmDatabaseHelper(getApplicationContext());
 
         String alarmName = nameTxtView.getText().toString();
 
@@ -126,9 +127,18 @@ public class AlarmCreationActivity extends AppCompatActivity {
         }
         String time = hour.concat(":").concat(minute);
 
+        AlarmRejectStatus status = db.doesRecordExist(-1, alarmName, time);
+
+        if (status == AlarmRejectStatus.DUPLICATE_NAME) {
+            Toast.makeText(this, "Alarm with the same name already exists", Toast.LENGTH_LONG);
+            return;
+        } else if (status == AlarmRejectStatus.DUPLICATE_TIME) {
+            Toast.makeText(this, "An alarm is already set for this time", Toast.LENGTH_LONG);
+            return;
+        }
+
         Alarm alarm = new Alarm(alarmName, time, toneId, true);
-        long id = alarmDatabaseHelper.save(alarm);
-        alarmDatabaseHelper.close();
+        long id = db.save(alarm);
 
         if (id > 0) {
             Log.i(TAG, "Alarm Saved to Database");

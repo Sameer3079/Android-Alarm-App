@@ -67,10 +67,11 @@ public class AlarmService extends Service {
 
         if (id == -1) {
             Toast.makeText(this, "Failed to find alarm", Toast.LENGTH_LONG);
+            Log.i(TAG, "Failed to find alarm");
             return;
         }
-        // Get Details of the alarm
 
+        // Get Details of the alarm
         AlarmDatabaseHelper db = new AlarmDatabaseHelper(this);
         Alarm alarm = db.read(id);
         if (alarm.isEnabled()) {
