@@ -157,6 +157,7 @@ public class AlarmCreationActivity extends AppCompatActivity {
 
         }
 
+        Toast.makeText(getApplicationContext(), "Alarm has been created", Toast.LENGTH_LONG).show();
         this.finish();
     }
 }
