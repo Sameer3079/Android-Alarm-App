@@ -175,7 +175,7 @@ public class AlarmRingActivity extends AppCompatActivity {
         choice_3TxtView.setText(choicesList.get(2));
         choice_4TxtView.setText(choicesList.get(3));
 
-        MediaPlayer mediaPlayer = MediaPlayer.create(this, Alarm.getToneResId((int) alarm.getAlarmToneId()));
+        final MediaPlayer mediaPlayer = MediaPlayer.create(this, Alarm.getToneResId((int) alarm.getAlarmToneId()));
         mediaPlayer.start();
 
         // Set up the user interaction to manually show or hide the system UI.
@@ -210,6 +210,7 @@ public class AlarmRingActivity extends AppCompatActivity {
                 long answerId = question.getAnswer();
 
                 if (answerId == choiceId) {
+                    mediaPlayer.stop();
                     finish();
                 } else {
                     Snackbar.make(findViewById(R.id.alarm_ring_content),

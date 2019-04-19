@@ -38,7 +38,7 @@ public class AlarmService extends Service {
                 setNew(intent);
                 break;
             case CANCEL_ALARM:
-                cancelOne();
+                cancelOne(intent);
                 break;
             case UPDATE_ALARM:
                 update(intent);
@@ -88,9 +88,30 @@ public class AlarmService extends Service {
         Log.i(TAG, "All Alarms Cancelled");
     }
 
-    // TODO: Implement
-    private void cancelOne() {
+    // Done within the Main Activity itself
+    // Problem: Cannot call the refresh alarms method after cancelling and deleting alarms
+    private void cancelOne(Intent intent) {
         Log.i(TAG, "Alarm Cancelled");
+
+        long alarmId = intent.getLongExtra("alarmId", -1);
+
+        if (alarmId == -1) {
+            Log.i(TAG, "Failed to get alarm id");
+            return;
+        }
+
+        AlarmDatabaseHelper db = new AlarmDatabaseHelper(this);
+        Alarm alarm = db.read(alarmId);
+        boolean deleteStatus = db.deleteOne(alarmId);
+        if (deleteStatus) {
+            Log.i(TAG, "Deleted");
+        } else {
+            Log.i(TAG, "An error occurred when deleting");
+        }
+
+        alarmMgr.cancel(PendingIntent.getBroadcast(this, (int) alarm.getId(),
+                new Intent(this, AlarmReceiver.class)
+                        .putExtra("alarmName", alarm.getName()), 0));
     }
 
     private void setAll() {

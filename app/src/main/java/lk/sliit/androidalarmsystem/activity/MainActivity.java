@@ -1,8 +1,10 @@
 package lk.sliit.androidalarmsystem.activity;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
@@ -103,6 +105,53 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("alarmId", alarm.getId());
 
                 startActivity(intent);
+            }
+        });
+        final Context context = this;
+        adapter.setLongClickListener(new CustomRecyclerViewAdapter.ItemLongClickListener() {
+            @Override
+            public void onItemLongClick(View view, int position) {
+                Log.i(TAG, "Item Long Click");
+                final Alarm alarm = alarmsArray.get(position);
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                String message = "Do you want to delete this alarm?\n\n" +
+                        "Alarm Name = " + alarm.getName() + "\n" +
+                        "Time = " + alarm.getTime() + "\n";
+                builder.setMessage(message);
+                builder.setCancelable(true);
+
+                builder.setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+
+                                AlarmDatabaseHelper db = new AlarmDatabaseHelper(getApplicationContext());
+                                boolean deleteStatus = db.deleteOne(alarm.getId());
+                                if (deleteStatus) {
+                                    Log.i(TAG, "Deleted");
+                                } else {
+                                    Log.i(TAG, "An error occurred when deleting");
+                                }
+                                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                                alarmManager.cancel(PendingIntent.getBroadcast(getApplicationContext(), (int) alarm.getId(),
+                                        new Intent(getApplicationContext(), AlarmReceiver.class)
+                                                .putExtra("alarmName", alarm.getName()), 0));
+
+                                refreshAlarms();
+                            }
+                        });
+
+                builder.setNegativeButton(
+                        "No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
         recyclerView.setAdapter(adapter);
