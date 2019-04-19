@@ -41,6 +41,8 @@ public class AlarmRingActivity extends AppCompatActivity {
     // Maps the RadioButton Number to choiceId
     private HashMap<Integer, Long> choiceIdMap = new HashMap<>();
 
+    private MediaPlayer mediaPlayer;
+
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -134,48 +136,7 @@ public class AlarmRingActivity extends AppCompatActivity {
 
         alarmName.setText(alarm.getName());
 
-        QuestionDatabaseHelper db = new QuestionDatabaseHelper(getApplicationContext());
-        int count = db.getQuestionsCount();
-
-        Random random = new Random();
-        int questionId = random.nextInt(count) + 1;
-        Log.i(TAG, "Question ID = " + questionId);
-
-        final Question question = db.getQuestion(questionId);
-        TreeMap<Long, String> choices = question.getChoices();
-
-        TextView questionTxtView = findViewById(R.id.question);
-        TextView choice_1TxtView = findViewById(R.id.choice_1);
-        TextView choice_2TxtView = findViewById(R.id.choice_2);
-        TextView choice_3TxtView = findViewById(R.id.choice_3);
-        TextView choice_4TxtView = findViewById(R.id.choice_4);
-
-        radioIdMap.put(R.id.choice_1, 0);
-        radioIdMap.put(R.id.choice_2, 1);
-        radioIdMap.put(R.id.choice_3, 2);
-        radioIdMap.put(R.id.choice_4, 3);
-
-        Log.i(TAG, "Choice 1 ID = " + R.id.choice_1);
-        Log.i(TAG, "Choice 2 ID = " + R.id.choice_2);
-        Log.i(TAG, "Choice 3 ID = " + R.id.choice_3);
-        Log.i(TAG, "Choice 4 ID = " + R.id.choice_4);
-
-        questionTxtView.setText(question.getQuestion());
-        Set<Long> ids = choices.keySet();
-        ArrayList<String> choicesList = new ArrayList<>();
-        int x = 0;
-        for (Long choiceId : ids) {
-            choicesList.add(choices.get(choiceId));
-            choiceIdMap.put(x, choiceId);
-            x++;
-        }
-        Log.i(TAG, choiceIdMap.toString());
-        choice_1TxtView.setText(choicesList.get(0));
-        choice_2TxtView.setText(choicesList.get(1));
-        choice_3TxtView.setText(choicesList.get(2));
-        choice_4TxtView.setText(choicesList.get(3));
-
-        final MediaPlayer mediaPlayer = MediaPlayer.create(this, Alarm.getToneResId((int) alarm.getAlarmToneId()));
+        mediaPlayer = MediaPlayer.create(this, Alarm.getToneResId((int) alarm.getAlarmToneId()));
         mediaPlayer.start();
 
         // Set up the user interaction to manually show or hide the system UI.
@@ -197,12 +158,50 @@ public class AlarmRingActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
                 WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
+        refreshQuestion();
+    }
+
+    private void refreshQuestion() {
+        QuestionDatabaseHelper db = new QuestionDatabaseHelper(getApplicationContext());
+        int count = db.getQuestionsCount();
+
+        Random random = new Random();
+        int questionId = random.nextInt(count) + 1;
+
+        final Question question = db.getQuestion(questionId);
+        TreeMap<Long, String> choices = question.getChoices();
+
+        TextView questionTxtView = findViewById(R.id.question);
+        TextView choice_1TxtView = findViewById(R.id.choice_1);
+        TextView choice_2TxtView = findViewById(R.id.choice_2);
+        TextView choice_3TxtView = findViewById(R.id.choice_3);
+        TextView choice_4TxtView = findViewById(R.id.choice_4);
+
+        radioIdMap.put(R.id.choice_1, 0);
+        radioIdMap.put(R.id.choice_2, 1);
+        radioIdMap.put(R.id.choice_3, 2);
+        radioIdMap.put(R.id.choice_4, 3);
+
+        questionTxtView.setText(question.getQuestion());
+        Set<Long> ids = choices.keySet();
+        ArrayList<String> choicesList = new ArrayList<>();
+        int x = 0;
+        for (Long choiceId : ids) {
+            choicesList.add(choices.get(choiceId));
+            choiceIdMap.put(x, choiceId);
+            x++;
+        }
+        Log.i(TAG, choiceIdMap.toString());
+        choice_1TxtView.setText(choicesList.get(0));
+        choice_2TxtView.setText(choicesList.get(1));
+        choice_3TxtView.setText(choicesList.get(2));
+        choice_4TxtView.setText(choicesList.get(3));
+
         checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 RadioGroup radioGroup = findViewById(R.id.choice_radio_group);
                 int radioBtnId = radioGroup.getCheckedRadioButtonId();
-                Log.i(TAG, "Radio Button ID = " + radioBtnId);
 
                 int radioBtnNumber = radioIdMap.get(radioBtnId);
                 long choiceId = choiceIdMap.get(radioBtnNumber);
@@ -213,6 +212,7 @@ public class AlarmRingActivity extends AppCompatActivity {
                     mediaPlayer.stop();
                     finish();
                 } else {
+                    refreshQuestion();
                     Snackbar.make(findViewById(R.id.alarm_ring_content),
                             "Selected Answer is Incorrect", Snackbar.LENGTH_LONG).show();
                 }
