@@ -121,7 +121,7 @@ public class AlarmRingActivity extends AppCompatActivity {
         Log.i(TAG, "Started Activity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_ring);
-
+        hide();
         mVisible = true;
         mContentView = findViewById(R.id.alarm_ring_content);
         alarmName = findViewById(R.id.alarmNameTextView);
@@ -228,7 +228,7 @@ public class AlarmRingActivity extends AppCompatActivity {
         // Trigger the initial hide() shortly after the activity has been
         // created, to briefly hint to the user that UI controls
         // are available.
-        delayedHide(100);
+//        hide();
     }
 
     private void toggle() {
@@ -237,6 +237,11 @@ public class AlarmRingActivity extends AppCompatActivity {
         } else {
             show();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.i(TAG, "Back Pressed");
     }
 
     private void hide() {
