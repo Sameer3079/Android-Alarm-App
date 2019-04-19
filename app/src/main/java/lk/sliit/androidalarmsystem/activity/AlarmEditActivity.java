@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -29,6 +30,7 @@ public class AlarmEditActivity extends AppCompatActivity {
     private Spinner toneSelectorSpinner;
     private Alarm alarm;
     private MediaPlayer mediaPlayer;
+    private boolean isInitialized = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,31 @@ public class AlarmEditActivity extends AppCompatActivity {
                 R.array.tones_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         toneSelectorSpinner.setAdapter(adapter);
+        toneSelectorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if (isInitialized) {
+                    Log.i(TAG, "Tone Selected");
+                    try {
+                        mediaPlayer.stop();
+                    } catch (NullPointerException e) {
+
+                    }
+                    mediaPlayer = MediaPlayer.create(getApplicationContext(), Alarm.getToneResId(position));
+                    mediaPlayer.start();
+                } else {
+                    isInitialized = true;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+                Log.i(TAG, "Nothing Selected");
+            }
+
+        });
     }
 
     private void setAlarmData(long alarmId) {
@@ -166,6 +193,7 @@ public class AlarmEditActivity extends AppCompatActivity {
 
         }
 
+        Toast.makeText(getApplicationContext(), "Alarm has been updated", Toast.LENGTH_LONG).show();
         this.finish();
     }
 }
