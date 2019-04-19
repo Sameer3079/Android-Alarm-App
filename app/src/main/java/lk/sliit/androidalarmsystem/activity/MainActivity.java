@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         AlarmDatabaseHelper alarmDatabaseHelper = new AlarmDatabaseHelper(getApplicationContext());
         List<Alarm> alarms = alarmDatabaseHelper.readAll();
 
-        ArrayList<Alarm> alarmsArray = new ArrayList<>();
+        final ArrayList<Alarm> alarmsArray = new ArrayList<>();
 
         int alarmCount = alarms.size();
         for (int x = 0; x < alarmCount; x++) {
@@ -98,6 +98,10 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(View view, int position) {
                 Log.i(TAG, "Item Click");
                 Intent intent = new Intent(getApplicationContext(), AlarmEditActivity.class);
+
+                Alarm alarm = alarmsArray.get(position);
+                intent.putExtra("alarmId", alarm.getId());
+
                 startActivity(intent);
             }
         });
