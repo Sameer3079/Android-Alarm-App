@@ -157,6 +157,7 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
         cursor.close();
+        db.close();
 
         return data;
     }
